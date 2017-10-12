@@ -1,4 +1,4 @@
-import numpy as np
+pass
 
 def least_squares_GD(y, tx, initial_w, max_iters, gamma):
     pass
@@ -9,10 +9,8 @@ def least_squares_SGD(y, tx, initial_w, max_iters, gamma):
     #Linear regression using stochastic gradient descent
 
 def least_squares(y, tx):
+    pass
     #Least squares regression using normal equations
-    txt = tx.T
-    w = np.linalg.inv(txt@tx)@txt@y
-    return w
 
 def ridge_regression(y, tx, lambda_ ):
     pass
