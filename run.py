@@ -5,10 +5,10 @@ import proj1_helpers
 ## 1st one contains the prediction of all elements in order
 ## 2nd one is an array of arrays containing the data for one prediction
 ## 3rd is the ids of each prediction
-trainResult,trainData,ids = proj1_helpers.load_csv_data('train.csv')
+trainResult,trainData,trainIds = proj1_helpers.load_csv_data('train.csv')
 
 ## test.csv return the same expect that testResult is useless (since we want to find it)
-testResult,testData,ids = proj1_helpers.load_csv_data('test.csv')
+testResult,testData,testIds = proj1_helpers.load_csv_data('test.csv')
 
 
 
