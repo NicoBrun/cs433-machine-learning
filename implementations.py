@@ -1,16 +1,15 @@
 import numpy as np
-
-## pour le moment helper pour faire fonctionner les autres
-def MSE(y,tx,w) :
-    e = y-np.dot(tx,w)
-    e = np.square(e)
-    mse = np.sum(e)
-    mse = mse/len(y)
-    return mse
+from help_functions import compute_mse,learning_by_gradient_descent,learning_by_penalized_gradient,compute_gradient
 
 def least_squares_GD(y, tx, initial_w, max_iters, gamma):
-    pass
     #Linear regression using gradient descent
+    """Gradient descent algorithm."""
+    w = initial_w
+    for n_iter in range(max_iters):
+        gr = compute_gradient(y, tx, w)
+        loss = compute_mse(y, tx, w)
+        w = w - gamma * gr
+    return w,loss
 
 def least_squares_SGD(y, tx, initial_w, max_iters, gamma):
     pass
@@ -29,21 +28,43 @@ def least_squares(y, tx):
         # invertible matrix
         w = np.dot(np.linalg.inv(xtx), np.dot(np.transpose(tx), y))
 
-    return MSE(y, tx, w), w
+    return w,compute_mse(y, tx, w)
 
 
 def ridge_regression(y, tx, lambda_ ):
     # Ridge regression using normal equations
     xtxli = np.dot(np.transpose(tx), tx) + (lambda_ * 2 * len(y)) * np.identity(len(tx[0]))
     w = np.dot(np.linalg.inv(xtxli), np.dot(np.transpose(tx), y))
-    mse = MSE(y, tx, w)
-    return mse, w
+    mse = compute_mse(y, tx, w)
+    return  w,mse
 
 
 def logistic_regression(y, tx, initial_w, max_iters, gamma):
-    pass
     #Logistic regression using gradient descent or SGD
+    threshold = 1e-8
+    losses = []
+    w = initial_w
+    for iter in range(max_iters):
+        # get loss and update w.
+        loss, w = learning_by_gradient_descent(y, tx, w, gamma)
+        # converge criterion
+        losses.append(loss)
+        if len(losses) > 1 and np.abs(losses[-1] - losses[-2]) < threshold:
+            break
+
+    return w,loss
 
 def reg_logistic_regression(y, tx, lambda_ , initial_w, max_iters, gamma):
-    pass
     #Regularized logistic regression using gradient descent or SGD
+    threshold = 1e-8
+    losses = []
+    w = initial_w
+    for iter in range(max_iter):
+        # get loss and update w.
+        loss, w = learning_by_penalized_gradient(y, tx, w, gamma, lambda_)
+        # converge criterion
+        losses.append(loss)
+        if len(losses) > 1 and np.abs(losses[-1] - losses[-2]) < threshold:
+            break
+
+    return w,loss
