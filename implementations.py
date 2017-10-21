@@ -41,14 +41,18 @@ def ridge_regression(y, tx, lambda_ ):
 
 def logistic_regression(y, tx, initial_w, max_iters, gamma):
     #Logistic regression using gradient descent or SGD
+    print("regression")
     threshold = 1e-8
     losses = []
     w = initial_w
     for iter in range(max_iters):
+
         # get loss and update w.
-        loss, w = learning_by_gradient_descent(y, tx, w, gamma)
+        loss, w,grad = learning_by_gradient_descent(y, tx, w, gamma)
         # converge criterion
         losses.append(loss)
+        if (iter % 1000== 0):
+            print("step {i}, loss = {l}, gradient = {g}".format(i=iter,l = loss,g=np.linalg.norm(grad)))
         if len(losses) > 1 and np.abs(losses[-1] - losses[-2]) < threshold:
             break
 

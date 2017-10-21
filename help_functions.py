@@ -3,34 +3,36 @@ import numpy as np
 
 def compute_mse(y, tx, w):
     """compute the loss by mse."""
-    e = y - tx.dot(w)
+    e = np.reshape(y,(len(y),1)) - tx.dot(w)
     mse = e.T.dot(e) / (2 * len(e))
     return mse
 
 def sigmoid(t):
     """apply sigmoid function on t."""
-    return np.exp(t)/(np.ones(t.shape)+np.exp(t))
+    #numerically more stable
+    exp_neg = np.exp(t*-1)
+
+    return 1/(1+exp_neg)
 
 def calculate_loss(y, tx, w):
     """compute the cost by negative log likelihood."""
-    txtw = tx.dot(w)
-    loss = -np.multiply(y,txtw) + np.log(1 + np.exp(txtw))
-    return np.sum(loss)
+    txw = np.matmul(tx, w)
+    return np.logaddexp(0.0, txw).sum() - np.dot(y, txw)
 
 def calculate_gradient(y, tx, w):
     """compute the gradient of loss."""
-    return tx.T.dot(sigmoid(tx.dot(w))-y)
+    return tx.T.dot(sigmoid(tx.dot(w))-np.reshape(y,(len(y),1)))
 
 def learning_by_gradient_descent(y, tx, w, gamma):
     """
     Do one step of gradient descent using logistic regression.
     Return the loss and the updated w.
     """
-
     loss = calculate_loss(y,tx,w)
     grad = calculate_gradient(y,tx,w)
-    w = w -gamma*grad
-    return loss, w
+    w_new = w - gamma*grad
+    #grad is for debugging purpose
+    return loss, w_new,grad
 
 def calculate_hessian(y, tx, w):
     """return the hessian of the loss function."""
@@ -60,3 +62,13 @@ def compute_gradient(y, tx, w):
     """Compute the gradient."""
     e = y- np.dot(tx,w)
     return -np.dot(np.transpose(tx),e) /len(y)
+
+def standardize(x,mean,std):
+    ''' fill your code in here...
+    '''
+    mean_tile = np.tile(mean,[x.shape[0],1])
+    std_dev = np.tile(std,[x.shape[0],1])
+    x = x-mean_tile
+    x = x/std_dev
+    return x
+
