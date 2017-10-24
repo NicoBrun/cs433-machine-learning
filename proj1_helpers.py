@@ -23,6 +23,12 @@ def load_csv_data(data_path, sub_sample=False):
 
     return yb, input_data, ids
 
+def load_test_csv(data_path) :
+    x =  np.genfromtxt(data_path, delimiter=",", skip_header=1)
+    ids = x[:, 0].astype(np.int)
+    input_data = x[:, 2:]
+
+    return input_data, ids
 
 def predict_labels(weights, data):
     """Generates class predictions given weights, and a test data matrix"""
