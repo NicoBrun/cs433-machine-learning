@@ -64,11 +64,13 @@ def reg_logistic_regression(y, tx, lambda_ , initial_w, max_iters, gamma):
     threshold = 1e-8
     losses = []
     w = initial_w
-    for iter in range(max_iter):
+    for iter in range(max_iters):
         # get loss and update w.
-        loss, w = learning_by_penalized_gradient(y, tx, w, gamma, lambda_)
+        loss, w,grad = learning_by_penalized_gradient(y, tx, w, gamma, lambda_)
         # converge criterion
         losses.append(loss)
+        if (iter % 1000== 0):
+            print("step {i}, loss = {l}, gradient = {g}".format(i=iter,l = loss,g=np.linalg.norm(grad)))
         if len(losses) > 1 and np.abs(losses[-1] - losses[-2]) < threshold:
             break
 

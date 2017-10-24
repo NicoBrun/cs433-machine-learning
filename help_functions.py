@@ -9,10 +9,10 @@ def compute_mse(y, tx, w):
 
 def sigmoid(t):
     """apply sigmoid function on t."""
-    #numerically more stable
-    exp_neg = np.exp(t*-1)
-
-    return 1/(1+exp_neg)
+    empty = np.empty(t.shape)
+    empty[t > 0] = 1/(1+ np.exp(-t[t>0]))
+    empty[t <= 0 ] = np.exp(t[t<=0])/(1+np.exp(t[t<=0]))
+    return empty
 
 def calculate_loss(y, tx, w):
     """compute the cost by negative log likelihood."""
@@ -38,8 +38,7 @@ def calculate_hessian(y, tx, w):
     """return the hessian of the loss function."""
     txw = tx.dot(w)
     diag = sigmoid(txw)*(np.ones(txw.shape)-sigmoid(txw))
-    S = np.diag(np.ndarray.flatten(diag))
-    return np.dot(tx.T,np.dot(S,tx))
+    return np.matmul(np.multiply(tx,diag).T,tx)
 
 def penalized_logistic_regression(y, tx, w, lambda_):
     """return the loss, gradient, and hessian."""
@@ -53,10 +52,12 @@ def learning_by_penalized_gradient(y, tx, w, gamma, lambda_):
     Return the loss and updated w.
     """
 
-    loss,gradient,_ = penalized_logistic_regression(y,tx,w,lambda_)
+    #on test avec Newton
 
-    w = w - lambda_*gradient
-    return loss, w
+    loss,gradient,H = penalized_logistic_regression(y,tx,w,lambda_)
+
+    w = w - gamma*np.matmul(np.linalg.inv(H),gradient)
+    return loss, w,gradient
 
 def compute_gradient(y, tx, w):
     """Compute the gradient."""

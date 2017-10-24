@@ -2,15 +2,15 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
-from implementations import logistic_regression
+from implementations import logistic_regression,reg_logistic_regression
 from help_functions import calculate_loss,standardize
 from proj1_helpers import load_csv_data,load_test_csv,predict_labels,create_csv_submission
 
 data_path = "train.csv"
 seed = 1
-lambda_ = 0.005
-gamma = 0.00001
-max_iter = 20000
+lambda_ = 0.001
+gamma = 0.001
+max_iter = 15000
 number_feature = 30
 
 
@@ -83,7 +83,7 @@ for i in range(0,4) :
     x_train = np.concatenate((np.ones((len(y_train), 1)), x_train,flag_col),axis = 1)
 
     #logistic regression
-    w,loss_train = logistic_regression(y_train,x_train,np.zeros((number_feature + 2 - len(col_to_delete),1)),max_iter,gamma)
+    w,loss_train = reg_logistic_regression(y_train,x_train,lambda_,np.zeros((number_feature + 2 - len(col_to_delete),1)),max_iter,gamma)
     ws.append(w)
     print("end training")
     loss_valid = calculate_loss(y_valid,x_valid,w)
@@ -99,6 +99,7 @@ global_error /= len(y_binary)
 
 print("global error is {e}".format(e = global_error))
 
+'''
 data_test, ids = load_test_csv("test.csv")
 
 #features processing
@@ -151,3 +152,4 @@ for i in range(0,4):
 
 
 create_csv_submission(sols[0][:,1],sols[0][:,0],"4_models.csv")
+'''
