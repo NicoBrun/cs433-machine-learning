@@ -91,7 +91,40 @@ plt.show()
 #0-20 rouge : on voit que le 20 n'influence pas le rouge
 #0 summary: le 0 rouge est surtout entre 67 et 180
 #1 summary: le 1 rouge surtout entre 0 et 120
-#20-18 est assez dank
-#20-12 aussi
+#2 summary: ressemble au 0
+#4-5 ressemble à une courbe x^2
+#4-6 ressemble à une courbe -x^2
+#4-11 il y a une legere ligne bleue sans rouge en y=0
+#4-22 le classique feature 22
+#5-22 exist if 22 == 2,3
+#5 summary: idk, petite ligne en x = 83, par exemple #5-25
+#6-12 ??
+#6-14 ??
+#6 summary: pas mal de rouge en x<0, et une ligne de rouge en x = 0.0129
+#6-22, existe seulement si 22 est 2,3 thanks Jojo
+#6-24 ??? sablier
+#6-27 sablier
+#7 summary assez distinct, zone de bleu sans rouge, useful?
+#7-9 x^2
+#7-11 zone vraiment sans rouge
+#7-14 very sexy ???
+#8-13 un seul point en 2500, alors que le reste est en <500 (à enlever?)
+#8-19 outliner pour les deux features
+#9-29 looks linear
+#10-13 looks like an inverse function
+#10-16 linear
+#11-12 tout dans les bordure
+#12-22 only if y =2 or 3
+#14-17 grande zones sans rouge
+#15-17 3 lignes blanches
+#15-18 2 lignes + 1 blanches
+#16-19 2 outliners points
+#17-25 3 lignes blanches
+#18-20 est assez dank linges everywhere
+#22 we know
+#23-26 triangle
+#23-29 linear
+#24-27 seems strange
+#25-28 blue lines (without red)
+#26-29 looks like 23-29
 #11-12
-#6-12
