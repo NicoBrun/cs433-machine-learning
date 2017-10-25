@@ -6,12 +6,70 @@ from implementations import logistic_regression,reg_logistic_regression
 from help_functions import calculate_loss,standardize
 from proj1_helpers import load_csv_data,load_test_csv,predict_labels,create_csv_submission
 
+def data_processing(data_to_process, col_delete, col_sqrt, col_log, col_nothing_max,col_threshold,col_nothing_norm, train = False, means = 0, stds = 0 ):
+
+    data_processed = data_to_process
+
+    #first we process the first col (-999 goes to mean)
+    first_col = data_processed[:, 0]
+    flag_col = np.zeros((len(first_col), 1))
+    pos_value = first_col[first_col > 0]
+    flag_col[first_col > 0] = 1
+    first_col[first_col < 0] = np.mean(pos_value)
+
+    first_col = np.reshape(first_col,(len(first_col),1))
+
+    data_sqrt = data_processed[:,col_sqrt]
+    data_sqrt[data_sqrt >=  0] = np.sqrt(data_sqrt[data_sqrt>0])
+
+    data_thresh = data_processed[:,col_threshold]
+
+    data_thresh[:,0][data_thresh[:,0] > 0] = 1
+    data_thresh[:,0][data_thresh[:,0] <= 0] = -1
+    if(data_thresh.shape[1] > 1):
+
+        data_thresh[:,1][data_thresh[:,1] > 0.5] = 1
+        data_thresh[:,1][data_thresh[:,1] <= 0.5] = -1
+
+    data_log = data_processed[:,col_log]
+    data_log[data_log > 0] = np.log(data_log[data_log > 0])
+    data_log[data_log == 0] = np.mean(data_log[data_log > 0])
+
+    data_max = data_processed[:,col_nothing_max]
+    max = np.amax(data_max,axis = 0)
+    data_max /= max
+
+
+    data_norm = data_processed[:,col_nothing_norm]
+
+
+
+    data_to_standardize = np.concatenate((first_col, data_sqrt, data_log, data_norm),axis = 1)
+
+
+
+    mean = means
+    std = stds
+    if(train) :
+        mean = np.mean(data_to_standardize,axis = 0)
+        std = np.std(data_to_standardize,axis = 0)
+
+    data_to_standardize = standardize(data_to_standardize,mean,std)
+
+    data_processed_standardized = np.concatenate((data_to_standardize,data_thresh,data_max,flag_col,np.ones((data_to_process.shape[0], 1))), axis=1)
+
+    return data_processed_standardized, mean, std
+
+
+
 data_path = "train.csv"
 seed = 1
 lambda_ = 0.001
-gamma = 0.001
-max_iter = 15000
+gamma = 0.00001
+max_iter = 22001
 number_feature = 30
+
+feature_to_watch = 7
 
 
 print("début")
@@ -37,57 +95,55 @@ global_error = 0
 
 for i in range(0,4) :
 
-    col_to_delete = [22]
+    col_to_delete = [ 22, 15, 18, 20, 25, 28]
+    col_log = [0,1,2,3,4,5,8,9,10,13,16,19,21,23,26,29]#16
+    col_sqrt =[0,13,16,21,23,26,29]#7
+    col_threshold = [11,12]#2
+    col_nothing_max = [6,14,17,24,27]#5
+    col_nothing_norm = [7]#1
+
     if(i == 0):
-        col_to_delete = [4,5,6,12,22,23,24,25,26,27,28,29]
+        col_to_delete = [4,5,6,12,15,18,20,22,23,24,25,26,27,28,29]
+        col_log = [0,1,2,3,8,9,10,13,16,19,21]
+        col_sqrt = [0, 13,16,21]
+        col_threshold = [11]
+        col_nothing_max = [6,14,17]
+        col_nothing_norm = [7]
+
     elif (i == 1):
-        col_to_delete = [4,5,6,12,22,26,27,28]
+        col_to_delete = [4, 5, 6, 12, 15, 18, 20, 22, 25, 26, 27, 28]
+        col_log = [ 0, 1, 2, 3, 8, 9,10, 13, 16, 19, 21, 23, 29]
+        col_sqrt = [0, 13, 16, 21, 23, 29]
+        col_threshold = [11]
+        col_nothing_max = [6,14,17,24]
+        col_nothing_norm = [7]
+
 
     np.random.seed(seed)
     index = indexes[i]
-    split = int(np.ceil(0.15*len(index)))
+    split = int(np.ceil(0.25*len(index)))
     np.random.shuffle(index)
 
     y_valid = y_binary[index[:split]]
     y_train = y_binary[index[split:]]
 
-    x_valid = np.delete(input_data[index[:split]],col_to_delete,1)
-    # first column standardization, if neg = min(positive value)
 
-    first_col = x_valid[:,0]
-    flag_col = np.zeros((len(first_col), 1))
-    pos_value_valid = first_col[ first_col> 0]
-    flag_col[first_col> 0] = 1
-    first_col[first_col< 0] = np.min(pos_value_valid)
-    x_valid[:,0] = first_col
+    x_train = input_data[index[split:]]
 
-    mean = np.mean(x_valid,axis = 0)
+    data_train,mean,std = data_processing(x_train, col_to_delete, col_sqrt,col_log,col_nothing_max,col_threshold,col_nothing_norm, train = True)
+
     means.append(mean)
-    std =  np.std(x_valid,axis = 0)
     stds.append(std)
-    x_valid = standardize(x_valid,mean ,std)
-    x_valid = np.concatenate((np.ones((len(y_valid),1)),x_valid,flag_col),axis = 1)
+    x_valid = input_data[index[:split]]
+    data_valid,_,_ = data_processing(x_valid, col_to_delete, col_sqrt, col_log,col_nothing_max,col_threshold,col_nothing_norm, train = False, means = mean, stds = std)
 
-
-
-    x_train = np.delete(input_data[index[split:]],col_to_delete,1)
-
-    first_col = x_train[:, 0]
-    flag_col = np.zeros((len(first_col), 1))
-    pos_value_train = first_col[first_col > 0]
-    flag_col[first_col > 0] = 1
-    first_col[first_col < 0] = np.min(pos_value_train)
-    x_train[:, 0] = first_col
-
-    x_train = standardize(x_train,mean,std)
-    x_train = np.concatenate((np.ones((len(y_train), 1)), x_train,flag_col),axis = 1)
 
     #logistic regression
-    w,loss_train = reg_logistic_regression(y_train,x_train,lambda_,np.zeros((number_feature + 2 - len(col_to_delete),1)),max_iter,gamma)
+    w,loss_train = logistic_regression(y_train,data_train,np.zeros((3+len(col_sqrt)+len(col_log)+len(col_nothing_max)+len(col_threshold)+len(col_nothing_norm) ,1)),max_iter,gamma)
     ws.append(w)
     print("end training")
-    loss_valid = calculate_loss(y_valid,x_valid,w)
-    pred = predict_labels(w,x_valid)
+    loss_valid = calculate_loss(y_valid,data_valid,w)
+    pred = predict_labels(w,data_valid)
 
     nnz = np.count_nonzero(np.reshape(y_valid,(len(y_valid),1))-pred)
 
@@ -99,43 +155,51 @@ global_error /= len(y_binary)
 
 print("global error is {e}".format(e = global_error))
 
-'''
-data_test, ids = load_test_csv("test.csv")
+
+input_test, ids = load_test_csv("test.csv")
 
 #features processing
 
 indexes_test = [[], [], [], []]
 
 sols = []
-for ind, item in enumerate(data_test):
+for ind, item in enumerate(input_test):
     indexes_test[int(item[22])].append(ind)
 
 for i in range(0,4):
-    print(i)
-    #remove unnecessary data column
-    col_to_delete = [22]
-    if (i == 0):
-        col_to_delete = [4, 5, 6, 12, 22, 23, 24, 25, 26, 27, 28, 29]
-    elif (i == 1):
-        col_to_delete = [4, 5, 6, 12, 22, 26, 27, 28]
 
-    x_test = np.delete(data_test[indexes_test[i]], col_to_delete, 1)
+    col_to_delete = [22, 15, 18, 20, 25, 28]  # almost constants values
+    col_log = [0, 1, 2, 3, 4, 5, 8, 9, 10, 13, 16, 19, 21, 23, 26, 29]
+    col_sqrt = [0, 13, 16, 21, 23, 26, 29]
+    col_threshold = [11, 12]
+    col_nothing_max = [6, 14, 17, 24, 27]
+    col_nothing_norm = [7]
+
+    if (i == 0):
+        col_to_delete = [4, 5, 6, 12, 15, 18, 20, 22, 23, 24, 25, 26, 27, 28, 29]
+        col_log = [0, 1, 2, 3, 8, 9, 10, 13, 16, 19, 21]
+        col_sqrt = [0, 13, 16, 21]
+        col_threshold = [11]
+        col_nothing_max = [6, 14, 17]
+        col_nothing_norm = [7]
+        #20
+
+    elif (i == 1):
+        col_to_delete = [4, 5, 6, 12, 15, 18, 20, 22, 25, 26, 27, 28]
+        col_log = [0, 1, 2, 3, 8, 9, 10, 13, 16, 19, 21, 23, 29]
+        col_sqrt = [0, 13, 16, 21, 23, 29]
+        col_threshold = [11]
+        col_nothing_max = [6, 14, 17, 24]
+        col_nothing_norm = [7]
+
+    x_test = input_test[indexes_test[i]]
 
     #process the first column wuth adding a flag
-    first_col = x_test[:, 0]
-    flag_col = np.zeros((len(first_col), 1))
-    pos_value_test = first_col[first_col > 0]
-    flag_col[first_col > 0] = 1
-    first_col[first_col < 0] = np.min(pos_value_test)
-    x_test[:, 0] = first_col
-
-    #standardization
-    x_test = standardize(x_test,means[i],stds[i])
-    #add the bias and the flag column
-    x_test =np.concatenate((np.ones((x_test.shape[0], 1)), x_test,flag_col),axis = 1)
+    data_test,_,_ = data_processing(x_test,col_to_delete,col_sqrt,col_log,col_nothing_max,col_threshold,col_nothing_norm,train= False, means= means[i], stds = stds[i])
 
     #prediction
-    y_test = predict_labels(ws[i],x_test)
+
+    y_test = predict_labels(ws[i],data_test)
 
     y_test[y_test == 0] = -1
 
@@ -151,5 +215,4 @@ for i in range(0,4):
 
 
 
-create_csv_submission(sols[0][:,1],sols[0][:,0],"4_models.csv")
-'''
+create_csv_submission(sols[0][:,1],sols[0][:,0],"4_models_data_processing.csv")

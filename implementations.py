@@ -45,6 +45,7 @@ def logistic_regression(y, tx, initial_w, max_iters, gamma):
     threshold = 1e-8
     losses = []
     w = initial_w
+
     gam = gamma
     for iter in range(max_iters):
 

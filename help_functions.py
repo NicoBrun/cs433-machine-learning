@@ -64,12 +64,17 @@ def compute_gradient(y, tx, w):
     e = y- np.dot(tx,w)
     return -np.dot(np.transpose(tx),e) /len(y)
 
-def standardize(x,mean,std):
+def standardize2(x,mean,std):
     ''' fill your code in here...
     '''
     mean_tile = np.tile(mean,[x.shape[0],1])
     std_dev = np.tile(std,[x.shape[0],1])
-    x = x-mean_tile
-    x = x/std_dev
-    return x
+    x_new = x-mean_tile
+    x_new = x_new/std_dev
+    return x_new
+
+def standardize(x,mean,std) :
+    x_new = x-mean
+    x_new = x_new/std
+    return x_new
 
