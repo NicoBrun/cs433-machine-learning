@@ -23,7 +23,7 @@ def calculate_gradient(y, tx, w):
     """compute the gradient of loss."""
     return tx.T.dot(sigmoid(tx.dot(w))-np.reshape(y,(len(y),1)))
 
-def learning_by_gradient_descent(y, tx, w, gamma):
+def learning_by_gradient_descent(y, tx, w, gamma,prev_grad):
     """
     Do one step of gradient descent using logistic regression.
     Return the loss and the updated w.

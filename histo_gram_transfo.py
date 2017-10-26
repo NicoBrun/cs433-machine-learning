@@ -22,7 +22,7 @@ for ind, item in enumerate(input_data):
     indexes[int(item[22])].append(ind)
 
 for feature_to_watch in range(30):
-    for i in range(1,4) :
+    for i in range(0,4) :
 
         if (i == 0) and feature_to_watch in [4, 5, 6, 12, 23, 24, 25, 26, 27, 28, 29]:
             continue
@@ -40,14 +40,15 @@ for feature_to_watch in range(30):
             st = fig.suptitle("jet {j} feature {f}".format(j=i,f = feature_to_watch))
 
             av = fig.add_subplot(231)
-            #av.hist((data1, data2),bins= 150, color = ['r', 'b'])
-            av.hist(data1, bins = 150, color = 'b', label='s')
-            av.hist(data2, bins = 150, color = 'g', label='b')
+            av.hist((data1, data2),bins= 150, histtype='bar', label = ["s","b"],  color = ['r', 'b'])
+
             av.legend(loc='upper right')
             av.set_title("Initial data")
 
             norm = fig.add_subplot(232)
-            norm.hist(((data - np.mean(data)) / np.std(data)), bins=150)
+            data_norm = (data - np.mean(data)) / np.std(data)
+            norm.hist((data_norm[output==1],data_norm[output == 0]), bins=150,histtype='bar', label = ["s","b"],  color = ['r', 'b'])
+            norm.legend(loc='upper right')
             norm.set_title("just normalization")
 
 
@@ -56,8 +57,12 @@ for feature_to_watch in range(30):
             data_ln[data > 0] = np.log(data[data > 0])
             data_ln[data < 0] = np.log(-data[data < 0])
             data_ln[data==0] = np.mean(data[data != 0])
-            log_.hist((data_ln - np.mean(data_ln)) / np.std(data_ln), bins=150)
+            data_ln = (data_ln-np.mean(data_ln))/np.std(data_ln)
+            log_.hist((data_ln[output == 1], data_ln[output == 0]), bins=150, label = ["s","b"],histtype='bar', color=['r', 'b'])
+
+            log_.legend(loc='upper right')
             log_.set_title("log")
+
 
 
 
@@ -70,17 +75,31 @@ for feature_to_watch in range(30):
 
             data_square_normalised  = (data_square - np.mean(data_square)) / np.std(data_square)
 
-            par.hist(data_square_normalised, bins = 150)
-            par.set_title("x^2")
+            par.hist((data_square_normalised[output == 1], data_square_normalised[output == 0]), bins=150, label = ["s","b"], histtype='bar', color=['r', 'b'])
 
+            par.legend(loc='upper right')
+            par.set_title("square")
+            
 
+            '''
+            ex = fig.add_subplot(234)
+            data_ex = data
+            data_ex = np.exp(data_ex)
+            data_ex = (data_ex - np.mean(data_ex))/np.std(data_ex)
+
+            ex.hist((data_ex[output == 1],data_ex[output == 0]),bins=150, label = ["s","b"],histtype='bar', color=['r', 'b'])
+            ex.legend(loc='upper right')
+            ex.set_title("exp")
+            '''
             dec= fig.add_subplot(235)
             data_decal = data
 
             data_decal[data >= 0] = np.sqrt(data_decal[data >= 0])
             data_decal[data < 0] = np.sqrt(-data_decal[data < 0])
+            data_decal = (data_decal - np.mean(data_decal)) / np.std(data_decal)
 
-            dec.hist((data_decal - np.mean(data_decal)) / np.std(data_decal), bins=150)
+            dec.hist((data_decal[output == 1],data_decal[output == 0]), bins=150, label = ["s","b"], histtype='bar', color=['r', 'b'])
+            dec.legend(loc='upper right')
             dec.set_title("sqrt")
 
 
@@ -88,14 +107,15 @@ for feature_to_watch in range(30):
             data_cub = data
 
             data_cub[data >= 0] = data_cub**3
-            #data_cub[data < 0] = np.sqrt(-data_cub[data < 0])
+            data_cub = (data_cub - np.mean(data_cub)) / np.std(data_cub)
 
-            cub.hist((data_cub - np.mean(data_cub)) / np.std(data_cub), bins=150)
+            cub.hist((data_cub[output == 1],data_cub[output == 0]), bins=150, label = ["s","b"], histtype='bar', color=['r', 'b'])
             cub.set_title("cube")
+            cub.legend(loc ='upper right')
 
             fig.tight_layout()
 
             st.set_y(0.95)
             fig.subplots_adjust(top = 0.85)
 
-            fig.savefig("transformation2/{f}_{i}.png".format(f=feature_to_watch,i=i))
+            fig.savefig("transfo_exp/{f}_{i}.png".format(f=feature_to_watch,i=i))
