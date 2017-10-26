@@ -40,14 +40,14 @@ for feature_to_watch in range(30):
             st = fig.suptitle("jet {j} feature {f}".format(j=i,f = feature_to_watch))
 
             av = fig.add_subplot(231)
-            av.hist((data1, data2),bins= 150, histtype='bar', label = ["s","b"],  color = ['r', 'b'])
+            av.hist((data1, data2),bins= 150, histtype='barstacked', label = ["s","b"],  color = ['r', 'b'])
 
             av.legend(loc='upper right')
             av.set_title("Initial data")
 
             norm = fig.add_subplot(232)
             data_norm = (data - np.mean(data)) / np.std(data)
-            norm.hist((data_norm[output==1],data_norm[output == 0]), bins=150,histtype='bar', label = ["s","b"],  color = ['r', 'b'])
+            norm.hist((data_norm[output==1],data_norm[output == 0]), bins=150,histtype='barstacked', label = ["s","b"],  color = ['r', 'b'])
             norm.legend(loc='upper right')
             norm.set_title("just normalization")
 
@@ -58,7 +58,7 @@ for feature_to_watch in range(30):
             data_ln[data < 0] = np.log(-data[data < 0])
             data_ln[data==0] = np.mean(data[data != 0])
             data_ln = (data_ln-np.mean(data_ln))/np.std(data_ln)
-            log_.hist((data_ln[output == 1], data_ln[output == 0]), bins=150, label = ["s","b"],histtype='bar', color=['r', 'b'])
+            log_.hist((data_ln[output == 1], data_ln[output == 0]), bins=150, label = ["s","b"],histtype='barstacked', color=['r', 'b'])
 
             log_.legend(loc='upper right')
             log_.set_title("log")
@@ -70,16 +70,16 @@ for feature_to_watch in range(30):
 
             data_square = data
             #data_pareto[data > 0] = 1 / data_pareto[data > 0]
-            data_square = np.square(data_square)
+            data_square = data_square ** 6
             data_square[data == 0] = np.mean(data[data > 0])
 
             data_square_normalised  = (data_square - np.mean(data_square)) / np.std(data_square)
 
-            par.hist((data_square_normalised[output == 1], data_square_normalised[output == 0]), bins=150, label = ["s","b"], histtype='bar', color=['r', 'b'])
+            par.hist((data_square_normalised[output == 1], data_square_normalised[output == 0]), bins=150, label = ["s","b"], histtype='barstacked', color=['r', 'b'])
 
             par.legend(loc='upper right')
-            par.set_title("square")
-            
+            par.set_title("6")
+
 
             '''
             ex = fig.add_subplot(234)
@@ -98,7 +98,7 @@ for feature_to_watch in range(30):
             data_decal[data < 0] = np.sqrt(-data_decal[data < 0])
             data_decal = (data_decal - np.mean(data_decal)) / np.std(data_decal)
 
-            dec.hist((data_decal[output == 1],data_decal[output == 0]), bins=150, label = ["s","b"], histtype='bar', color=['r', 'b'])
+            dec.hist((data_decal[output == 1],data_decal[output == 0]), bins=150, label = ["s","b"], histtype='barstacked', color=['r', 'b'])
             dec.legend(loc='upper right')
             dec.set_title("sqrt")
 
@@ -106,11 +106,11 @@ for feature_to_watch in range(30):
             cub = fig.add_subplot(236)
             data_cub = data
 
-            data_cub[data >= 0] = data_cub**3
+            data_cub[data >= 0] = data_cub**7
             data_cub = (data_cub - np.mean(data_cub)) / np.std(data_cub)
 
-            cub.hist((data_cub[output == 1],data_cub[output == 0]), bins=150, label = ["s","b"], histtype='bar', color=['r', 'b'])
-            cub.set_title("cube")
+            cub.hist((data_cub[output == 1],data_cub[output == 0]), bins=150, label = ["s","b"], histtype='barstacked', color=['r', 'b'])
+            cub.set_title("7")
             cub.legend(loc ='upper right')
 
             fig.tight_layout()
@@ -118,4 +118,4 @@ for feature_to_watch in range(30):
             st.set_y(0.95)
             fig.subplots_adjust(top = 0.85)
 
-            fig.savefig("transfo_exp/{f}_{i}.png".format(f=feature_to_watch,i=i))
+            fig.savefig("transfo_exp/stack_6_7_{f}_{i}.png".format(f=feature_to_watch,i=i))
