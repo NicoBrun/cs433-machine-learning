@@ -45,12 +45,12 @@ def logistic_regression(y, tx, initial_w, max_iters, gamma):
     threshold = 1e-8
     losses = []
     w = initial_w
-
     gam = gamma
     for iter in range(max_iters):
 
         # get loss and update w.
         loss, w,grad = learning_by_gradient_descent(y, tx, w, gam)
+        prev_grad = grad
         # converge criterion
         losses.append(loss)
         if (iter % 1000== 0):
