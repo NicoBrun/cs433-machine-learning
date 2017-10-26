@@ -6,7 +6,7 @@ from implementations import logistic_regression,reg_logistic_regression
 from help_functions import calculate_loss,standardize
 from proj1_helpers import load_csv_data,load_test_csv,predict_labels,create_csv_submission
 
-def data_processing(data_to_process, col_delete, col_sqrt, col_log, col_nothing_max,col_threshold,col_nothing_norm, train = False, means = 0, stds = 0 ):
+def data_processing(data_to_process, col_delete, col_sqrt, col_log, col_nothing_max,col_threshold ,col_nothing_norm, col_distance, col_pow_2, col_pow_3,col_pow_5, train = False, means = 0, stds = 0 ):
 
     data_processed = data_to_process
 
@@ -42,10 +42,18 @@ def data_processing(data_to_process, col_delete, col_sqrt, col_log, col_nothing_
 
     data_norm = data_processed[:,col_nothing_norm]
 
+    columns_data_distance = []
+    for col_distance_index in range(len(col_distance)):
+        columns_data_distance.append(np.abs(data_processed[:,[col_distance[col_distance_index][0]]]-data_processed[:,[col_distance[col_distance_index][1]]]))
+    data_distance = np.concatenate(columns_data_distance,axis = 1)
+    
+    data_pow_2 = data_processed[:,col_pow_2]**2
 
+    data_pow_3 = data_processed[:,col_pow_3]**3
 
-    data_to_standardize = np.concatenate((first_col, data_sqrt, data_log, data_norm),axis = 1)
+    data_pow_5 = data_processed[:,col_pow_5]**5
 
+    data_to_standardize = np.concatenate((first_col, data_sqrt, data_log, data_norm, data_distance,data_pow_2,data_pow_3,data_pow_5),axis = 1)
 
 
     mean = means
@@ -93,30 +101,50 @@ stds = []
 
 global_error = 0
 
-for i in range(0,4) :
+for i in range(0,4):
 
-    col_to_delete = [ 22, 15, 18, 20, 25, 28]
-    col_log = [0,1,2,3,4,5,8,9,10,13,16,19,21,23,26,29]#16
-    col_sqrt =[0,13,16,21,23,26,29]#7
-    col_threshold = [11,12]#2
-    col_nothing_max = [6,14,17,24,27]#5
-    col_nothing_norm = [7]#1
+    col_to_delete = [22]  # almost constants values
+    col_log = [0, 1, 2, 3, 4, 5, 8, 9, 10, 13, 16, 19, 21, 23, 26, 29]
+    col_sqrt = [0, 13, 16, 21, 23, 26, 29]
+    col_threshold = [11, 12]
+    col_nothing_max = [6, 14, 17, 24, 27]
+    col_nothing_norm = [7]
+    col_distance = [(15,18),(20,25),(18,28),(14,17),(15,25),(15,28),(18,20),(18,25),(18,28),(20,28)]
+    col_pow_2 = [3]
+    col_pow_3 = [19]
+    col_pow_5 = []
+    
 
-    if(i == 0):
-        col_to_delete = [4,5,6,12,15,18,20,22,23,24,25,26,27,28,29]
-        col_log = [0,1,2,3,8,9,10,13,16,19,21]
-        col_sqrt = [0, 13,16,21]
+    if (i == 0):
+        col_to_delete = [4, 5, 6, 12, 22, 23, 24, 25, 26, 27, 28, 29]
+        col_log = [0, 1, 2, 3, 8, 9, 10, 13, 16, 19, 21]
+        col_sqrt = [0, 13, 16, 21]
         col_threshold = [11]
-        col_nothing_max = [6,14,17]
+        col_nothing_max = [6, 14, 17]
         col_nothing_norm = [7]
+        col_distance = [(15,18),(14,17),(18,20)]
+        col_pow_2 = []
+        col_pow_3 = []
+        col_pow_5 = []
+        #20
 
     elif (i == 1):
-        col_to_delete = [4, 5, 6, 12, 15, 18, 20, 22, 25, 26, 27, 28]
-        col_log = [ 0, 1, 2, 3, 8, 9,10, 13, 16, 19, 21, 23, 29]
+        col_to_delete = [4, 5, 6, 12, 22, 26, 27, 28]
+        col_log = [0, 1, 2, 3, 8, 9, 10, 13, 16, 19, 21, 23, 29]
         col_sqrt = [0, 13, 16, 21, 23, 29]
         col_threshold = [11]
-        col_nothing_max = [6,14,17,24]
+        col_nothing_max = [6, 14, 17, 24]
         col_nothing_norm = [7]
+        col_distance = [(15,18),(20,25),(14,17),(15,25),(18,20),(18,25)]
+        col_pow_2 = [3]
+        col_pow_3 = [19]
+        col_pow_5 = []
+
+    elif (i == 3):
+        col_pow_2 = []
+        col_pow_3 = [8, 19]
+        col_pow_5 = [3]
+
 
 
     np.random.seed(seed)
@@ -130,17 +158,17 @@ for i in range(0,4) :
 
     x_train = input_data[index[split:]]
 
-    data_train,mean,std = data_processing(x_train, col_to_delete, col_sqrt,col_log,col_nothing_max,col_threshold,col_nothing_norm, train = True)
+    data_train,mean,std = data_processing(x_train, col_to_delete, col_sqrt,col_log,col_nothing_max,col_threshold,col_nothing_norm, col_distance,col_pow_2,col_pow_3,col_pow_5, train = True)
 
     means.append(mean)
     stds.append(std)
     x_valid = input_data[index[:split]]
-    data_valid,_,_ = data_processing(x_valid, col_to_delete, col_sqrt, col_log,col_nothing_max,col_threshold,col_nothing_norm, train = False, means = mean, stds = std)
+    data_valid,_,_ = data_processing(x_valid, col_to_delete, col_sqrt, col_log,col_nothing_max,col_threshold,col_nothing_norm, col_distance,col_pow_2,col_pow_3,col_pow_5, train = False, means = mean, stds = std)
 
 
     #logistic regression
     # 3 = bias, 1st column, flag column
-    w,loss_train = logistic_regression(y_train,data_train,np.zeros((3+len(col_sqrt)+len(col_log)+len(col_nothing_max)+len(col_threshold)+len(col_nothing_norm) ,1)),max_iter,gamma)
+    w,loss_train = logistic_regression(y_train,data_train,np.zeros((3+len(col_sqrt)+len(col_log)+len(col_nothing_max)+len(col_threshold)+len(col_nothing_norm)+len(col_distance)+len(col_pow_2)+len(col_pow_3)+len(col_pow_5) ,1)),max_iter,gamma)
     ws.append(w)
     print("end training")
     loss_valid = calculate_loss(y_valid,data_valid,w)
@@ -150,7 +178,7 @@ for i in range(0,4) :
 
     error_rate = nnz/len(y_valid)
     global_error += (len(y_valid)+len(y_train)) * error_rate
-    print("Pour jet {i} loss ={l} error_rate = {e}".format(i=i,l = loss_valid, e = error_rate))
+    print("For jet {i} loss ={l} error_rate = {e}".format(i=i,l = loss_valid, e = error_rate))
 
 global_error /= len(y_binary)
 
@@ -169,34 +197,53 @@ for ind, item in enumerate(input_test):
 
 for i in range(0,4):
 
-    col_to_delete = [22, 15, 18, 20, 25, 28]  # almost constants values
+    col_to_delete = [22]  # almost constants values
     col_log = [0, 1, 2, 3, 4, 5, 8, 9, 10, 13, 16, 19, 21, 23, 26, 29]
     col_sqrt = [0, 13, 16, 21, 23, 26, 29]
     col_threshold = [11, 12]
     col_nothing_max = [6, 14, 17, 24, 27]
     col_nothing_norm = [7]
+    col_distance = [(15,18),(20,25),(18,28),(14,17),(15,25),(15,28),(18,20),(18,25),(18,28),(20,28)]
+    col_pow_2 = [3]
+    col_pow_3 = [19]
+    col_pow_5 = []
 
     if (i == 0):
-        col_to_delete = [4, 5, 6, 12, 15, 18, 20, 22, 23, 24, 25, 26, 27, 28, 29]
+        col_to_delete = [4, 5, 6, 12, 22, 23, 24, 25, 26, 27, 28, 29]
         col_log = [0, 1, 2, 3, 8, 9, 10, 13, 16, 19, 21]
         col_sqrt = [0, 13, 16, 21]
         col_threshold = [11]
         col_nothing_max = [6, 14, 17]
         col_nothing_norm = [7]
+        col_distance = [(15,18),(14,17),(18,20)]
+        col_pow_2 = []
+        col_pow_3 = []
+        col_pow_5 = []
         #20
 
     elif (i == 1):
-        col_to_delete = [4, 5, 6, 12, 15, 18, 20, 22, 25, 26, 27, 28]
+        col_to_delete = [4, 5, 6, 12, 22, 26, 27, 28]
         col_log = [0, 1, 2, 3, 8, 9, 10, 13, 16, 19, 21, 23, 29]
         col_sqrt = [0, 13, 16, 21, 23, 29]
         col_threshold = [11]
         col_nothing_max = [6, 14, 17, 24]
         col_nothing_norm = [7]
+        col_distance = [(15,18),(20,25),(14,17),(15,25),(18,20),(18,25)]
+        col_pow_2 = [3]
+        col_pow_3 = [19]
+        col_pow_5 = []
+
+    elif (i == 3):
+        col_pow_2 = []
+        col_pow_3 = [8, 19]
+        col_pow_5 = [3]
+
+
 
     x_test = input_test[indexes_test[i]]
 
     #process the first column wuth adding a flag
-    data_test,_,_ = data_processing(x_test,col_to_delete,col_sqrt,col_log,col_nothing_max,col_threshold,col_nothing_norm,train= False, means= means[i], stds = stds[i])
+    data_test,_,_ = data_processing(x_test,col_to_delete,col_sqrt,col_log,col_nothing_max,col_threshold,col_nothing_norm, col_distance,col_pow_2,col_pow_3,col_pow_5,train= False, means= means[i], stds = stds[i])
 
     #prediction
 
@@ -216,4 +263,4 @@ for i in range(0,4):
 
 
 
-create_csv_submission(sols[0][:,1],sols[0][:,0],"4_models_data_processing.csv")
+create_csv_submission(sols[0][:,1],sols[0][:,0],"yolo_4_models_data_processing.csv")
