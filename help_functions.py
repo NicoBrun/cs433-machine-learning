@@ -23,7 +23,7 @@ def calculate_gradient(y, tx, w):
     """compute the gradient of loss."""
     return tx.T.dot(sigmoid(tx.dot(w))-np.reshape(y,(len(y),1)))
 
-def learning_by_gradient_descent(y, tx, w, gamma,prev_grad):
+def learning_by_gradient_descent(y, tx, w, gamma):
     """
     Do one step of gradient descent using logistic regression.
     Return the loss and the updated w.
@@ -54,9 +54,9 @@ def learning_by_penalized_gradient(y, tx, w, gamma, lambda_):
 
     #on test avec Newton
 
-    loss,gradient,H = penalized_logistic_regression(y,tx,w,lambda_)
+    loss,gradient,_ = penalized_logistic_regression(y,tx,w,lambda_)
 
-    w = w - gamma*np.matmul(np.linalg.inv(H),gradient)
+    w = w - gamma*gradient
     return loss, w,gradient
 
 def compute_gradient(y, tx, w):

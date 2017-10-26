@@ -1,5 +1,6 @@
 import numpy as np
 from help_functions import compute_mse,learning_by_gradient_descent,learning_by_penalized_gradient,compute_gradient
+from proj1_helpers import predict_labels
 
 def least_squares_GD(y, tx, initial_w, max_iters, gamma):
     #Linear regression using gradient descent
@@ -39,13 +40,15 @@ def ridge_regression(y, tx, lambda_ ):
     return  w,mse
 
 
-def logistic_regression(y, tx, initial_w, max_iters, gamma):
+def logistic_regression(y, tx, initial_w, max_iters, gamma, tx_valid, y_valid,iter_step):
     #Logistic regression using gradient descent or SGD
     print("regression")
     threshold = 1e-8
     losses = []
     w = initial_w
     gam = gamma
+    val_errors = []
+    train_errors = []
     for iter in range(max_iters):
 
         # get loss and update w.
@@ -53,26 +56,39 @@ def logistic_regression(y, tx, initial_w, max_iters, gamma):
         prev_grad = grad
         # converge criterion
         losses.append(loss)
+
+        if(iter % iter_step == 0) :
+            val_errors.append(np.count_nonzero(predict_labels(w,tx_valid) - np.reshape(y_valid,(len(y_valid),1)) )/len(y_valid))
+            train_errors.append(np.count_nonzero(predict_labels(w,tx) - np.reshape(y,(len(y),1)) )/len(y))
+
         if (iter % 1000== 0):
             print("step {i}, loss = {l}, gradient = {g}".format(i=iter,l = loss,g=np.linalg.norm(grad)))
         if len(losses) > 1 and np.abs(losses[-1] - losses[-2]) < threshold:
             break
 
-    return w,loss
+    return w,loss, val_errors, train_errors
 
-def reg_logistic_regression(y, tx, lambda_ , initial_w, max_iters, gamma):
+def reg_logistic_regression(y, tx, lambda_ , initial_w, max_iters, gamma,tx_valid,y_valid,iter_step):
     #Regularized logistic regression using gradient descent or SGD
     threshold = 1e-8
     losses = []
     w = initial_w
+    val_errors = []
+    train_errors = []
+
     for iter in range(max_iters):
         # get loss and update w.
         loss, w,grad = learning_by_penalized_gradient(y, tx, w, gamma, lambda_)
         # converge criterion
         losses.append(loss)
+
+        if (iter % iter_step == 0):
+            val_errors.append(np.count_nonzero(predict_labels(w, tx_valid) - np.reshape(y_valid, (len(y_valid), 1))) / len(y_valid))
+            train_errors.append(np.count_nonzero(predict_labels(w, tx) - np.reshape(y, (len(y), 1))) / len(y))
+
         if (iter % 1000== 0):
             print("step {i}, loss = {l}, gradient = {g}".format(i=iter,l = loss,g=np.linalg.norm(grad)))
         if len(losses) > 1 and np.abs(losses[-1] - losses[-2]) < threshold:
             break
 
-    return w,loss
+    return w,loss, val_errors, train_errors

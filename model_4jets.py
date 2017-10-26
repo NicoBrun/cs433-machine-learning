@@ -71,10 +71,12 @@ def data_processing(data_to_process, col_delete, col_sqrt, col_log, col_nothing_
 
 
 data_path = "train.csv"
+name_error_image = "valid_train_error.png"
 seed = 1
 lambda_ = 0.001
 gamma = 0.00001
 max_iter = 22001
+iter_step = 200 #to plot validation and training error
 number_feature = 30
 
 feature_to_watch = 7
@@ -100,6 +102,11 @@ stds = []
 #split 25/75 après on fera du k_fold mais c'est juste une toute première version 5-fold ?
 
 global_error = 0
+
+fig = plt.figure()
+st = fig.suptitle("Train and validation error")
+
+subplots =[221,222,223,224]
 
 for i in range(0,4):
 
@@ -168,23 +175,38 @@ for i in range(0,4):
 
     #logistic regression
     # 3 = bias, 1st column, flag column
-    w,loss_train = logistic_regression(y_train,data_train,np.zeros((3+len(col_sqrt)+len(col_log)+len(col_nothing_max)+len(col_threshold)+len(col_nothing_norm)+len(col_distance)+len(col_pow_2)+len(col_pow_3)+len(col_pow_5) ,1)),max_iter,gamma)
+    w,loss_train,iter_val_errors,iter_train_errors = logistic_regression(y_train,data_train,np.zeros((3+len(col_sqrt)+len(col_log)+len(col_nothing_max)+len(col_threshold)+len(col_nothing_norm)+len(col_distance)+len(col_pow_2)+len(col_pow_3)+len(col_pow_5) ,1)),max_iter,gamma,data_valid,y_valid,iter_step)
     ws.append(w)
     print("end training")
+
+    ax = fig.add_subplot(subplots[i])
+    ax.plot(np.linspace(0,max_iter,num = np.ceil(max_iter/iter_step)),iter_val_errors, 'b', label = 'v')
+    ax.plot(np.linspace(0, max_iter, num=np.ceil(max_iter / iter_step)),iter_train_errors, 'g', label='t')
+    ax.legend(loc='upper right')
+    ax.set_title("jet {i}".format(i=i))
+
+    training_error = np.count_nonzero(predict_labels(w,data_train) - np.reshape(y_train,(len(y_train),1)))/len(y_train)
     loss_valid = calculate_loss(y_valid,data_valid,w)
     pred = predict_labels(w,data_valid)
 
     nnz = np.count_nonzero(np.reshape(y_valid,(len(y_valid),1))-pred)
 
-    error_rate = nnz/len(y_valid)
-    global_error += (len(y_valid)+len(y_train)) * error_rate
-    print("For jet {i} loss ={l} error_rate = {e}".format(i=i,l = loss_valid, e = error_rate))
+    validation_error = nnz / len(y_valid)
+    global_error += (len(y_valid)+len(y_train)) * validation_error #est-ce vraiment juste de comptpter le train ?
+    print("For jet {i} loss ={l} validation_error = {e} and training_error = {t}".format(i=i, l = loss_valid, e = validation_error,t=training_error))
 
 global_error /= len(y_binary)
 
 print("global error is {e}".format(e = global_error))
 
+fig.tight_layout()
 
+st.set_y(0.95)
+fig.subplots_adjust(top = 0.85)
+
+fig.savefig(name_error_image)
+
+'''
 input_test, ids = load_test_csv("test.csv")
 
 #features processing
@@ -264,3 +286,5 @@ for i in range(0,4):
 
 
 create_csv_submission(sols[0][:,1],sols[0][:,0],"yolo_4_models_data_processing.csv")
+
+'''
