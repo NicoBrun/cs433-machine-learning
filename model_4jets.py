@@ -139,6 +139,7 @@ for i in range(0,4) :
 
 
     #logistic regression
+    # 3 = bias, 1st column, flag column
     w,loss_train = logistic_regression(y_train,data_train,np.zeros((3+len(col_sqrt)+len(col_log)+len(col_nothing_max)+len(col_threshold)+len(col_nothing_norm) ,1)),max_iter,gamma)
     ws.append(w)
     print("end training")
