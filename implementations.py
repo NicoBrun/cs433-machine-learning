@@ -58,8 +58,8 @@ def logistic_regression(y, tx, initial_w, max_iters, gamma, tx_valid, y_valid,it
         losses.append(loss)
 
         if(iter % iter_step == 0) :
-            val_errors.append(np.count_nonzero(predict_labels(w,tx_valid) - np.reshape(y_valid,(len(y_valid),1)) )/len(y_valid))
-            train_errors.append(np.count_nonzero(predict_labels(w,tx) - np.reshape(y,(len(y),1)) )/len(y))
+            val_errors.append(np.count_nonzero(predict_labels(w,tx_valid,0.5) - np.reshape(y_valid,(len(y_valid),1)) )/len(y_valid))
+            train_errors.append(np.count_nonzero(predict_labels(w,tx,0.5) - np.reshape(y,(len(y),1)) )/len(y))
 
         if (iter % 1000== 0):
             print("step {i}, loss = {l}, gradient = {g}".format(i=iter,l = loss,g=np.linalg.norm(grad)))

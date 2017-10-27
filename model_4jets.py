@@ -71,11 +71,11 @@ def data_processing(data_to_process, col_delete, col_sqrt, col_log, col_nothing_
 
 
 data_path = "train.csv"
-name_error_image = "valid_train_error.png"
+name_error_image = "valid_train_error_with_thresh.png"
 seed = 1
 lambda_ = 0.001
 gamma = 0.00001
-max_iter = 22001
+max_iter = 30001
 iter_step = 200 #to plot validation and training error
 number_feature = 30
 
@@ -107,6 +107,7 @@ fig = plt.figure()
 st = fig.suptitle("Train and validation error")
 
 subplots =[221,222,223,224]
+threshes = []
 
 for i in range(0,4):
 
@@ -127,7 +128,7 @@ for i in range(0,4):
         col_log = [0, 1, 2, 3, 8, 9, 10, 13, 16, 19, 21]
         col_sqrt = [0, 13, 16, 21]
         col_threshold = [11]
-        col_nothing_max = [6, 14, 17]
+        col_nothing_max = [14, 17]
         col_nothing_norm = [7]
         col_distance = [(15,18),(14,17),(18,20)]
         col_pow_2 = []
@@ -140,7 +141,7 @@ for i in range(0,4):
         col_log = [0, 1, 2, 3, 8, 9, 10, 13, 16, 19, 21, 23, 29]
         col_sqrt = [0, 13, 16, 21, 23, 29]
         col_threshold = [11]
-        col_nothing_max = [6, 14, 17, 24]
+        col_nothing_max = [14, 17, 24]
         col_nothing_norm = [7]
         col_distance = [(15,18),(20,25),(14,17),(15,25),(18,20),(18,25)]
         col_pow_2 = [3]
@@ -185,19 +186,38 @@ for i in range(0,4):
     ax.legend(loc='upper right')
     ax.set_title("jet {i}".format(i=i))
 
-    training_error = np.count_nonzero(predict_labels(w,data_train) - np.reshape(y_train,(len(y_train),1)))/len(y_train)
+
     loss_valid = calculate_loss(y_valid,data_valid,w)
-    pred = predict_labels(w,data_valid)
+
+    thresholds = np.linspace(-5,3,200)
+    best_thresh = 0
+    min_error = 1
+    for  thresh in thresholds :
+        pred_thr = predict_labels(w,data_train,thresh)
+        err =np.count_nonzero(np.reshape(y_train, (len(y_train), 1)) - pred_thr)/len(y_train)
+        if(err <= min_error):
+            min_error = err
+            best_thresh = thresh
+
+    threshes.append(best_thresh)
+    print("for jet {i} the best thresh is {t}".format(i=i,t=best_thresh))
+    training_error = np.count_nonzero(
+        predict_labels(w, data_train, best_thresh,show_figure=True) - np.reshape(y_train, (len(y_train), 1))) / len(y_train)
+
+    pred = predict_labels(w,data_valid,best_thresh,show_figure=True)
 
     nnz = np.count_nonzero(np.reshape(y_valid,(len(y_valid),1))-pred)
 
     validation_error = nnz / len(y_valid)
     global_error += (len(y_valid)+len(y_train)) * validation_error #est-ce vraiment juste de comptpter le train ?
+    #print(w.T)
     print("For jet {i} loss ={l} validation_error = {e} and training_error = {t}".format(i=i, l = loss_valid, e = validation_error,t=training_error))
 
 global_error /= len(y_binary)
 
 print("global error is {e}".format(e = global_error))
+
+
 
 fig.tight_layout()
 
@@ -206,7 +226,8 @@ fig.subplots_adjust(top = 0.85)
 
 fig.savefig(name_error_image)
 
-'''
+
+
 input_test, ids = load_test_csv("test.csv")
 
 #features processing
@@ -218,7 +239,7 @@ for ind, item in enumerate(input_test):
     indexes_test[int(item[22])].append(ind)
 
 for i in range(0,4):
-
+    print(i)
     col_to_delete = [22]  # almost constants values
     col_log = [0, 1, 2, 3, 4, 5, 8, 9, 10, 13, 16, 19, 21, 23, 26, 29]
     col_sqrt = [0, 13, 16, 21, 23, 26, 29]
@@ -235,7 +256,7 @@ for i in range(0,4):
         col_log = [0, 1, 2, 3, 8, 9, 10, 13, 16, 19, 21]
         col_sqrt = [0, 13, 16, 21]
         col_threshold = [11]
-        col_nothing_max = [6, 14, 17]
+        col_nothing_max = [ 14, 17]
         col_nothing_norm = [7]
         col_distance = [(15,18),(14,17),(18,20)]
         col_pow_2 = []
@@ -248,7 +269,7 @@ for i in range(0,4):
         col_log = [0, 1, 2, 3, 8, 9, 10, 13, 16, 19, 21, 23, 29]
         col_sqrt = [0, 13, 16, 21, 23, 29]
         col_threshold = [11]
-        col_nothing_max = [6, 14, 17, 24]
+        col_nothing_max = [14, 17, 24]
         col_nothing_norm = [7]
         col_distance = [(15,18),(20,25),(14,17),(15,25),(18,20),(18,25)]
         col_pow_2 = [3]
@@ -269,7 +290,7 @@ for i in range(0,4):
 
     #prediction
 
-    y_test = predict_labels(ws[i],data_test)
+    y_test = predict_labels(ws[i],data_test,threshes[i])
 
     y_test[y_test == 0] = -1
 
@@ -285,6 +306,5 @@ for i in range(0,4):
 
 
 
-create_csv_submission(sols[0][:,1],sols[0][:,0],"yolo_4_models_data_processing.csv")
+create_csv_submission(sols[0][:,1],sols[0][:,0],"4_models_with_thresh.csv")
 
-'''

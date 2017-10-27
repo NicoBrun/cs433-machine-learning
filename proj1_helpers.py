@@ -2,6 +2,7 @@
 """some helper functions for project 1."""
 import csv
 import numpy as np
+import matplotlib.pyplot as plt
 
 
 def load_csv_data(data_path, sub_sample=False):
@@ -30,11 +31,11 @@ def load_test_csv(data_path) :
 
     return input_data, ids
 
-def predict_labels(weights, data):
+def predict_labels(weights, data,thresh,show_figure = False):
     """Generates class predictions given weights, and a test data matrix"""
     y_pred = np.dot(data, weights)
-    y_pred[np.where(y_pred <= 0.5)] = 0 #rechanger à -1
-    y_pred[np.where(y_pred > 0.5)] = 1
+    y_pred[np.where(y_pred <= thresh)] = 0
+    y_pred[np.where(y_pred > thresh)] = 1
     
     return y_pred
 

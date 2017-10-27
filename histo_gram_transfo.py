@@ -65,7 +65,7 @@ for feature_to_watch in range(30):
 
 
 
-
+            '''
             par= fig.add_subplot(234)
 
             data_square = data
@@ -79,6 +79,20 @@ for feature_to_watch in range(30):
 
             par.legend(loc='upper right')
             par.set_title("6")
+            '''
+
+            doub = fig.add_subplot(234)
+            data_doub = data
+
+            data_doub[data >= 0] = np.sqrt(data_doub[data >= 0])
+            data_doub[data < 0] = np.sqrt(-data_doub[data < 0])
+            data_doub = np.sqrt(data_doub)
+            data_doub = (data_doub - np.mean(data_doub)) / np.std(data_doub)
+
+            doub.hist((data_doub[output == 1], data_doub[output == 0]), bins=150, label=["s", "b"],
+                     histtype='barstacked', color=['r', 'b'])
+            doub.legend(loc='upper right')
+            doub.set_title(" double sqrt")
 
 
             '''
@@ -91,6 +105,7 @@ for feature_to_watch in range(30):
             ex.legend(loc='upper right')
             ex.set_title("exp")
             '''
+
             dec= fig.add_subplot(235)
             data_decal = data
 
@@ -118,4 +133,4 @@ for feature_to_watch in range(30):
             st.set_y(0.95)
             fig.subplots_adjust(top = 0.85)
 
-            fig.savefig("transfo_exp/stack_6_7_{f}_{i}.png".format(f=feature_to_watch,i=i))
+            fig.savefig("transfo_exp/stack_doub_{f}_{i}.png".format(f=feature_to_watch,i=i))
