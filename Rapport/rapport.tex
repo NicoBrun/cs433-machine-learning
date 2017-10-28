@@ -15,23 +15,59 @@
 
 \section{Introduction}
 
-ML c'est vraiment cool.
+Sexy introduction about ML and the problem,
+we choose to have  with 4 different model in function of the data, and all the different models???  
 
 
 \section{Models and methods}
 
 \subsection{Choice of Models}
-On pr\'esente les 6 models possible \`a partir des fonctions.
+First of all, we have to select the core of our model. In this project, there is 6 possible models on which we can base.
+\begin{description}
+	\item[Linear regression using gradient descent] \ \\
+	Add description + formulas
+	\item[Linear regression using stochastic gradient descent] \ \\
+	Add description + formulas
+	\item[Least squares regression using normal equations] \ \\
+	Add description + formulas
+	\item[Ridge regression using normal equations] \ \\
+	Add description + formulas
+	\item[Logistic regression using gradient descent or SGD] \ \\
+	Add description + formulas
+	\item[Regularized logistic regression using gradient descent or SGD] \ \\
+	Add description + formulas
+\end{description}
 
-Le plus Swag c'est lui: ???
+The reason we based our model on ??? is because we have the least global error on the dataset. Fig.1 
 
-On presente aussi d'avoir 4 models grace \`a feature 22
+Furthermore, in function of the feature named "fit", some parameters are unavailable. Thanks to this important information, we don't train only one model, but 4, since "fit" can be {0,1,2,3}.
+This idea reduce our global error, when compared to an single model without this separation. Fig.2
 
 \subsection{Choice of parameters}
-On dis aussi pour la meilleure gamma et lambda si c'est le cas.
+Blablabla
+Cross-correlation by K-fold:
+
+As seen in Fig.3, the parameters that reduces most the train error are lambda = ??? and gamma = ???.
 
 \subsection{Choice of features}
-On en a effac\'e des features pas utile, on a mis des carr\'e, des logs,etc.
+
+We can improve our model by adding new features, which are function of other parameters. We want more features that have a Normal distribution. 
+\begin{description}
+	\item[Natural logarithm] \ \\
+	Add description + picture where a parameter is nice
+	\item[Square root] \ \\
+	Add description + picture where a parameter is nice
+	\item[Threshold] \ \\
+	Add description + picture where a parameter is nice
+	\item[Nothing max] \ \\
+	Add description + picture where a parameter is nice
+	\item[Nothing norm] \ \\
+	Add description + picture where a parameter is nice
+	\item[Distance] \ \\
+	When we plot 2 parameters in a graph, we can find some correlation between (Fig.3). To reduces this property to a normal distribution, we compute the Manhattan distance. + picture where a parameter is nice
+	\item[Nth power] \ \\
+	Add description + picture where a parameter is nice
+\end{description}
 \section{Results}
 On compare entre model simple et le 4 jets.
 
@@ -45,19 +81,13 @@ On montre notre erreur global, on parle de kaggle?
 
 \section{Discussion}
 
-4jet apporte plus de pr\'ecision \`a notre model
-
-nos valeurs sont cool, nos iterations aussi, comme dis le graph:
+Separating our model into 4 different ones was a great idea, reducing considerably our global error (Fig.1) in the same way that including more parameters (Fig.2). Those added criterion improve the quality of our model, adjusting from ??? to ???.    
 
 
 
 \section{Summary}
-	Yolo on est trop fort, mais pas autant que les autres.
-	Progression? Ajouter plus de feature, trouver des autres truc cool \`a faire
+	0.18\% of error is kinda ok with the simplicity of the core models. If we want to improve it more, we would need to find more useful parameters to boost our data.
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 \section*{Acknowledgements}
 On est tous trop beau: et c'est pas nos r\'ef\'erence en dessous si jamais
 

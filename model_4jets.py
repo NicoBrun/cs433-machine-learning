@@ -13,9 +13,6 @@ lambda_ = 0.001
 gamma = 0.00001
 max_iter = 30001
 iter_step = 200 #to plot validation and training error
-number_feature = 30
-
-feature_to_watch = 7
 
 """ returns the columns according to what operations have
     to be done on them in order to get the best model. operations
@@ -230,7 +227,7 @@ st = fig.suptitle("Train and validation error")
 
 threshes = []
 
-for i in range(0,4):
+for i in range(4):
     col_to_delete, col_log, col_sqrt, col_threshold, col_nothing_max, col_nothing_norm, col_distance, col_pow_2, col_pow_3, col_pow_5 = get_columns(i)
 
     #train/test ratio is 0.75/0.25 for now

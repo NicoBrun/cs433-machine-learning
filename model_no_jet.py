@@ -219,7 +219,7 @@ indexes_test = [[], [], [], []]
 sols = []
 x_test = data_arange(input_test)
 
-#process the first column wuth adding a flag
+#process the first column with adding a flag
 data_test,_,_ = data_processing(x_test,col_to_delete,col_sqrt,col_log,col_nothing_max,col_threshold,col_nothing_norm, col_distance,col_pow_2,col_pow_3,col_pow_5,train= False, means= mean, stds = std)
 
 #prediction
