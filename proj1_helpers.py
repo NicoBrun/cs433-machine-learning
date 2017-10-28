@@ -15,7 +15,7 @@ def load_csv_data(data_path, sub_sample=False):
     # convert class labels from strings to binary (0,1) A REMETTRE a LA FIN A -1
     yb = np.ones(len(y))
     yb[np.where(y=='b')] = 0
-    
+
     # sub-sample
     if sub_sample:
         yb = yb[::50]
@@ -31,12 +31,12 @@ def load_test_csv(data_path) :
 
     return input_data, ids
 
-def predict_labels(weights, data,thresh,show_figure = False):
+def predict_labels(weights, data, thresh):
     """Generates class predictions given weights, and a test data matrix"""
     y_pred = np.dot(data, weights)
     y_pred[np.where(y_pred <= thresh)] = 0
     y_pred[np.where(y_pred > thresh)] = 1
-    
+
     return y_pred
 
 
