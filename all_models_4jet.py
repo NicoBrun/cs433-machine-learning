@@ -237,7 +237,7 @@ for i in range(4):
     y_valid, y_train, x_valid, x_train = split_data(0.25, y_binary, input_data, indexes[i])
 
     # process data
-    col_to_delete, col_log, col_sqrt, col_threshold, col_nothing_max, col_nothing_norm, col_distance, col_pow_2, col_pow_3, col_pow_5 = get_columns(jet)
+    col_to_delete, col_log, col_sqrt, col_threshold, col_nothing_max, col_nothing_norm, col_distance, col_pow_2, col_pow_3, col_pow_5 = get_columns(i)
     data_train, mean, std = data_processing(x_train, i, train = True)
     means.append(mean)
     stds.append(std)
