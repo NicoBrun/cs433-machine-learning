@@ -3,7 +3,8 @@
 ## TODO:
 * remplir le readme
 * commenter tout le code
-* changer les 6 functions models (celle voulue par le project description doivent retourner (w,loss))
+#* changer les 6 functions models (celle voulue par le project description doivent retourner (w,loss))
+* enrever les print dans implementation.py
 * run les 6 models et avoir les erreures et les ajouter dans le rapport comme justification
 * run avec et sans le 4 jets, ajouter les résultat au rapport
 * run avec et sans les features processing, ajouter les résults au rapports
