@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6350 64-bit) (preloaded format=pdflatex 2017.6.6)  29 OCT 2017 13:45
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6350 64-bit) (preloaded format=pdflatex 2017.6.6)  29 OCT 2017 23:10
 entering extended mode
 **./rapport.tex
 (rapport.tex
@@ -300,7 +300,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 34--35
 
  []
 
-<valid_train_error_with_thresh_no_jet.png, id=64, 462.528pt x 346.896pt>
+<valid_train_error_with_thresh_no_jet.png, id=60, 462.528pt x 346.896pt>
 File: valid_train_error_with_thresh_no_jet.png Graphic file (type png)
 
 <use valid_train_error_with_thresh_no_jet.png>
@@ -310,11 +310,35 @@ Package pdftex.def Info: valid_train_error_with_thresh_no_jet.png used on input
  [1{C:/ProgramData/MiKTeX/2.9/pdftex/config/pdftex.map}
 
 
-] <21_0.png, id=85, 462.528pt x 346.896pt>
+]
+LaTeX Font Info:    Try loading font information for OMS+ptm on input line 95.
+ ("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\omsptm.fd"
+File: omsptm.fd 
+)
+LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 95.
+ <21_0.png, id=84, 462.528pt x 346.896pt>
 File: 21_0.png Graphic file (type png)
+ <use 21_0.png>
+Package pdftex.def Info: 21_0.png used on input line 113.
+(pdftex.def)             Requested size: 243.91125pt x 182.93298pt.
 
-<use 21_0.png>
-Package pdftex.def Info: 21_0.png used on input line 115.
+<feature11.png, id=85, 462.528pt x 346.896pt>
+File: feature11.png Graphic file (type png)
+ <use feature11.png>
+Package pdftex.def Info: feature11.png used on input line 120.
+(pdftex.def)             Requested size: 243.91125pt x 182.93298pt.
+
+<features18_25.png, id=86, 974.64125pt x 723.70375pt>
+File: features18_25.png Graphic file (type png)
+ <use features18_25.png>
+Package pdftex.def Info: features18_25.png used on input line 127.
+(pdftex.def)             Requested size: 243.91125pt x 181.11322pt.
+
+<19_3.png, id=87, 462.528pt x 346.896pt>
+File: 19_3.png Graphic file (type png)
+ <use 19_3.png>
+Package pdftex.def Info: 19_3.png used on input line 134.
 (pdftex.def)             Requested size: 243.91125pt x 182.93298pt.
  (rapport.bbl [2 <./valid_train_error_with_thresh_no_jet.png> <./21_0.png>])
 
@@ -328,26 +352,24 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 141.
-[3
-
-]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 141.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 158.
+[3 <./feature11.png> <./features18_25.png> <./19_3.png>]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 158.
  (rapport.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 141.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 141.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 158.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 158.
 Package rerunfilecheck Info: File `rapport.out' has not changed.
-(rerunfilecheck)             Checksum: 54AACD4F9F2331C8E89775D7829461B4;1138.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 141.
+(rerunfilecheck)             Checksum: D569BF29D95C5CBB3594B1F862B6C029;1091.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 158.
  ) 
 Here is how much of TeX's memory you used:
- 5810 strings out of 493323
- 89473 string characters out of 3139070
- 178900 words of memory out of 3000000
- 9303 multiletter control sequences out of 15000+200000
+ 5846 strings out of 493323
+ 90070 string characters out of 3139070
+ 179056 words of memory out of 3000000
+ 9332 multiletter control sequences out of 15000+200000
  35809 words of font info for 65 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 28i,8n,28p,474b,454s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 28i,8n,28p,512b,456s stack positions out of 5000i,500n,10000p,200000b,50000s
 {C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/base/8r.enc}<C:/Program Files/Mi
 KTeX 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Program Files/MiKTeX 2.9
 /fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Program Files/MiKTeX 2.9/fonts/t
@@ -359,9 +381,9 @@ ts/cm/cmr10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr
  Files/MiKTeX 2.9/fonts/type1/urw/times/utmb8a.pfb><C:/Program Files/MiKTeX 2.9
 /fonts/type1/urw/times/utmr8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/
 times/utmri8a.pfb>
-Output written on rapport.pdf (3 pages, 180892 bytes).
+Output written on rapport.pdf (3 pages, 947063 bytes).
 PDF statistics:
- 149 PDF objects out of 1000 (max. 8388607)
- 30 named destinations out of 1000 (max. 500000)
- 131 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 157 PDF objects out of 1000 (max. 8388607)
+ 31 named destinations out of 1000 (max. 500000)
+ 138 words of extra memory for PDF output out of 10000 (max. 10000000)
 
