@@ -293,7 +293,7 @@ for i in range(4):
     #Least squares logistic regression
     print("Least squares logistic regression")
     w_ls, loss_train_ls = least_squares(y_train, data_train)
-    global_error_ls = global_error(y_valid, data_valid, y_train, data_train, w_ls)
+    global_error_ls += global_error(y_valid, data_valid, y_train, data_train, w_ls)
     print("global error for least squares is {e}".format(e = global_error_ls))
 
 
@@ -310,7 +310,7 @@ for i in range(4):
                                                                             +len(col_pow_5) ,1)),
                                                                             max_iter,
                                                                             gamma)
-    global_error_lsg = global_error(y_valid, data_valid, y_train, data_train, w_lsg)
+    global_error_lsg += global_error(y_valid, data_valid, y_train, data_train, w_lsg)
     print("global error for least squares is {e}".format(e = global_error_lsg))
 
     """#Least squares gradient descent
@@ -326,7 +326,7 @@ for i in range(4):
                                                                             +len(col_pow_5) ,1)),
                                                                             max_iter,
                                                                             gamma)
-    global_error_lss = global_error(y_valid, data_valid, y_train, data_train, w_lss)
+    global_error_lss += global_error(y_valid, data_valid, y_train, data_train, w_lss)
     print("global error for stochastic least squares is {e}".format(e = global_error_lss))"""
 
 
