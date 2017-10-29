@@ -29,7 +29,7 @@ def cross_validation_visualization(gammas, mse_tr, mse_te):
     plt.semilogx(gammas, mse_tr, marker=".", color='b', label='train error')
     plt.semilogx(gammas, mse_te, marker=".", color='r', label='test error')
     plt.xlabel("lambda")
-    plt.ylabel("rmse")
+    plt.ylabel("loss")
     plt.title("cross validation")
     plt.legend(loc=2)
     plt.grid(True)
@@ -40,8 +40,8 @@ y_binary,input_data,ids = load_csv_data(data_path)
 
 seed = 1
 #gamma = 0.00001
-list_gamma = np.logspace(-5, 0, 30)
-max_iters = 2201
+list_gamma = np.logspace(-5, 0, 15)
+max_iters = 2001
 iter_step = 100
 k_fold = 4
 
@@ -73,5 +73,4 @@ for gamma in list_gamma:
 
     list_val_errors.append(mean_val_errors)
     list_train_errors.append(mean_train_errors)
-
-cross_validation_visualization(list_gamma, mean_val_errors, mean_train_errors)
+cross_validation_visualization(list_gamma, list_val_errors, list_train_errors)
