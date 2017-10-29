@@ -25,13 +25,33 @@ we choose to have  with 4 different model in function of the data, and all the d
 First of all, we have to select the core of our model. In this project, there is 6 possible models on which we can base.
 \begin{description}
 	\item[Linear regression using gradient descent] \ \\
-	Add description + formulas
+	
+	This model try to minimize the error of the function, by moving the vector w in the reverse trajectory of the gradient.
+	$$w^{(t+1)}=w^{(t)} -\gamma \nabla L(w^{(t)})$$
+	$$e = y-Xw$$
+	$$\nabla L(w) = -\frac{1}{N}X^te$$
+	
 	\item[Linear regression using stochastic gradient descent] \ \\
+	
 	Add description + formulas
+	
+	
 	\item[Least squares regression using normal equations] \ \\
-	Add description + formulas
+	
+	We try to solve: $\nabla L(w^*) = 0$
+	
+	Then we derive
+	$$w^* = (X^\top X)^{-1}X^\top y$$
+	and a unknown data-point would have 
+	$$\hat y_m := x_m^\top w^*$$
+	
 	\item[Ridge regression using normal equations] \ \\
-	Add description + formulas
+	
+	We want to punish complex models and conversely choose simpler ones.
+	In the case of ridge regression, we add a regularizer $\Omega(w) = \lambda||w||_2^2$ in the quest to minimize w:
+	$$\min\limits_{w} L(w) + \Omega(w)$$
+	the explicit solution of w become:
+	$$w_{ridge}^* = (X^\top X+2N\lambda I)^{-1}X^\top y$$
 	\item[Logistic regression using gradient descent or SGD] \ \\
 	Add description + formulas
 	\item[Regularized logistic regression using gradient descent or SGD] \ \\
