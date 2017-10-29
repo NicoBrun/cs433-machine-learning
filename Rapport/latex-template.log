@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6350 64-bit) (preloaded format=pdflatex 2017.6.6)  27 OCT 2017 18:09
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6350 64-bit) (preloaded format=pdflatex 2017.6.6)  29 OCT 2017 11:18
 entering extended mode
 **./latex-template.tex
 (latex-template.tex
@@ -292,6 +292,10 @@ G,.JBIG2,.JB2,.eps]
 )
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <14> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 16.
+Missing character: There is no Ã in font ptmr7t!
+Missing character: There is no © in font ptmr7t!
+Missing character: There is no Ã in font ptmr7t!
+Missing character: There is no © in font ptmr7t!
 
 <denoised_signal_1d.png, id=77, 578.16pt x 433.62pt>
 File: denoised_signal_1d.png Graphic file (type png)
@@ -374,7 +378,7 @@ ourier/ucrr8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmb8a.pfb
 ><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmbi8a.pfb><C:/Program Fil
 es/MiKTeX 2.9/fonts/type1/urw/times/utmr8a.pfb><C:/Program Files/MiKTeX 2.9/fon
 ts/type1/urw/times/utmri8a.pfb>
-Output written on latex-template.pdf (3 pages, 238362 bytes).
+Output written on latex-template.pdf (3 pages, 238265 bytes).
 PDF statistics:
  184 PDF objects out of 1000 (max. 8388607)
  44 named destinations out of 1000 (max. 500000)
