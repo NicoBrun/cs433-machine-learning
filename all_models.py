@@ -98,12 +98,13 @@ def data_arange(input_data):
 """ determines the threshold for separating output
     that gives the smallest error """
 def best_treshold(w, data_train, y_train):
-    thresholds = np.linspace(-5,3,200)
+    thresholds = np.linspace(-5,3,50)
     best_thresh = 0
     min_error = 1
     for thresh in thresholds :
         pred_thr = predict_labels(w,data_train,thresh)
-        err =np.count_nonzero(np.reshape(y_train, (len(y_train), 1)) - pred_thr)/len(y_train)
+        #resh = np.reshape(y_train, (len(y_train), 1)) - pred_thr
+        err =np.count_nonzero(y_train - pred_thr)/len(y_train)
         if(err <= min_error):
             min_error = err
             best_thresh = thresh
@@ -114,14 +115,10 @@ def global_error(y_valid, data_valid, y_train, data_train, w):
     loss_valid = calculate_loss(y_valid,data_valid,w)
 
     best_thresh = best_treshold(w, data_train, y_train)
-
     training = np.count_nonzero(
-        predict_labels(w, data_train, best_thresh) - np.reshape(y_train, (len(y_train), 1))) / len(y_train)
-
+        predict_labels(w, data_train, best_thresh) - y_train) / len(y_train)
     pred = predict_labels(w,data_valid,best_thresh)
-
-    nnz = np.count_nonzero(np.reshape(y_valid,(len(y_valid),1))-pred) / len(y_valid)
-
+    nnz = np.count_nonzero(y_valid-pred) / len(y_valid)
     global_error = (len(y_valid)+len(y_train)) * nnz / len(y_binary)
     return global_error
 
@@ -163,7 +160,7 @@ data_valid,_,_ = data_processing(x_valid, col_to_delete, col_sqrt, col_log,col_n
 
 #logistic regression
 # 3 = bias, 1st column, flag column
-w_log, loss_train_log, iter_val_errors_log, iter_train_errors_log = logistic_regression(y_train,
+"""w_log, loss_train_log, iter_val_errors_log, iter_train_errors_log = logistic_regression(y_train,
                                                                         data_train,
                                                                         np.zeros((3+len(col_sqrt)
                                                                             +len(col_log)
@@ -203,7 +200,7 @@ w_reg, loss_train_reg, iter_val_errors_reg, iter_train_errors_reg = reg_logistic
                                                                         iter_step)
 
 global_error_reg = global_error(y_valid, data_valid, y_train, data_train, w_reg)
-print("global error is {e}".format(e = global_error_reg))
+print("global error is {e}".format(e = global_error_reg))"""
 
 # ridge regression
 """np.random.seed(1)
@@ -225,8 +222,19 @@ w_ls, loss_train_ls = least_squares(y_train, data_train)
 global_error_ls = global_error(y_valid, data_valid, y_train, data_train, w_ls)
 print("global error is {e}".format(e = global_error_ls))
 
+
 #Least squares gradient logistic regression
-w_lsg, loss_train_lsg = least_squares_GD(y_train, data_train)
+w_lsg, loss_train_lsg = least_squares_GD(y_train, data_train, np.zeros((3+len(col_sqrt)
+                                                                        +len(col_log)
+                                                                        +len(col_nothing_max)
+                                                                        +len(col_threshold)
+                                                                        +len(col_nothing_norm)
+                                                                        +len(col_distance)
+                                                                        +len(col_pow_2)
+                                                                        +len(col_pow_3)
+                                                                        +len(col_pow_5) ,1)),
+                                                                        max_iter,
+                                                                        gamma)
 global_error_lsg = global_error(y_valid, data_valid, y_train, data_train, w_lsg)
 print("global error is {e}".format(e = global_error_lsg))
 
