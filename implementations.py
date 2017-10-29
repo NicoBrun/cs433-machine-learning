@@ -10,7 +10,6 @@ def least_squares_GD(y, tx, initial_w, max_iters, gamma):
     losses = []
     for n_iter in range(max_iters):
         gr = compute_gradient(y, tx, w)
-        print(gr)
         loss = compute_mse(y, tx, w)
         losses.append(loss)
         w = w - gamma * gr
@@ -69,8 +68,6 @@ def logistic_regression(y, tx, initial_w, max_iters, gamma, tx_valid, y_valid,it
     losses = []
     w = initial_w
     gam = gamma
-    val_errors = []
-    train_errors = []
     for iter in range(max_iters):
 
         # get loss and update w.
@@ -78,39 +75,27 @@ def logistic_regression(y, tx, initial_w, max_iters, gamma, tx_valid, y_valid,it
         prev_grad = grad
         # converge criterion
         losses.append(loss)
-
-        if(iter % iter_step == 0) :
-            val_errors.append(np.count_nonzero(predict_labels(w,tx_valid,0.5) - np.reshape(y_valid,(len(y_valid),1)) )/len(y_valid))
-            train_errors.append(np.count_nonzero(predict_labels(w,tx,0.5) - np.reshape(y,(len(y),1)) )/len(y))
-
         if (iter % 1000== 0):
             print("step {i}, loss = {l}, gradient = {g}".format(i=iter,l = loss,g=np.linalg.norm(grad)))
         if len(losses) > 1 and np.abs(losses[-1] - losses[-2]) < threshold:
             break
 
-    return w,loss, val_errors, train_errors
+    return w,loss
 
 def reg_logistic_regression(y, tx, lambda_ , initial_w, max_iters, gamma,tx_valid,y_valid,iter_step):
     #Regularized logistic regression using gradient descent or SGD
     threshold = 1e-8
     losses = []
     w = initial_w
-    val_errors = []
-    train_errors = []
 
     for iter in range(max_iters):
         # get loss and update w.
         loss, w,grad = learning_by_penalized_gradient(y, tx, w, gamma, lambda_)
         # converge criterion
         losses.append(loss)
-
-        if (iter % iter_step == 0):
-            val_errors.append(np.count_nonzero(predict_labels(w, tx_valid, 0.5) - np.reshape(y_valid, (len(y_valid), 1))) / len(y_valid))
-            train_errors.append(np.count_nonzero(predict_labels(w, tx, 0.5) - np.reshape(y, (len(y), 1))) / len(y))
-
         if (iter % 1000== 0):
             print("step {i}, loss = {l}, gradient = {g}".format(i=iter,l = loss,g=np.linalg.norm(grad)))
         if len(losses) > 1 and np.abs(losses[-1] - losses[-2]) < threshold:
             break
 
-    return w,loss, val_errors, train_errors
+    return w,loss

@@ -2,8 +2,7 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
-from implementations import logistic_regression,reg_logistic_regression
-from help_functions import calculate_loss,standardize
+from help_functions import calculate_loss,standardize, logistic_regression,reg_logistic_regression
 from proj1_helpers import load_csv_data,load_test_csv,predict_labels,create_csv_submission
 
 data_path = "train.csv"

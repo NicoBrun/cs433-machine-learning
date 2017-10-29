@@ -209,9 +209,11 @@ def global_error(y_valid, data_valid, y_train, data_train, w):
     return global_error
 
 print("début")
+
 #load data and separate it into 4 according to their jet
 y_binary,input_data,ids = load_csv_data(data_path)
 indexes = separate_from_jet(input_data)
+
 
 ws_log = []
 ws_reg = []
@@ -230,26 +232,19 @@ global_error_lsg = 0
 global_error_lss = 0
 global_error_rid  = 0
 
-fig = plt.figure()
-st = fig.suptitle("Train and validation error")
-
-
 for i in range(4):
-    col_to_delete, col_log, col_sqrt, col_threshold, col_nothing_max, col_nothing_norm, col_distance, col_pow_2, col_pow_3, col_pow_5 = get_columns(i)
-
     #train/test ratio is 0.75/0.25 for now
     y_valid, y_train, x_valid, x_train = split_data(0.25, y_binary, input_data, indexes[i])
 
+    # process data
+    col_to_delete, col_log, col_sqrt, col_threshold, col_nothing_max, col_nothing_norm, col_distance, col_pow_2, col_pow_3, col_pow_5 = get_columns(jet)
     data_train, mean, std = data_processing(x_train, i, train = True)
-
     means.append(mean)
     stds.append(std)
-
     data_valid, _, _ = data_processing(x_valid, i, train = False, means = mean, stds = std)
 
-
     #logistic regression
-    """w_log,loss_train_log,iter_val_errors_log,iter_train_errors_log = logistic_regression(y_train,
+    """w_log,loss_train_log = logistic_regression(y_train,
                                             data_train,
                                             np.zeros((3+len(col_sqrt)+
                                                 len(col_log)+
@@ -270,23 +265,21 @@ for i in range(4):
     print("global error for log is {e}".format(e = global_error_log))
 
     # regularized logistic regression
-    w_reg, loss_train_reg, iter_val_errors_reg, iter_train_errors_reg = reg_logistic_regression(y_train,
-                                                                            data_train,
-                                                                            0.05,
-                                                                            np.zeros((3+len(col_sqrt)
-                                                                                +len(col_log)
-                                                                                +len(col_nothing_max)
-                                                                                +len(col_threshold)
-                                                                                +len(col_nothing_norm)
-                                                                                +len(col_distance)
-                                                                                +len(col_pow_2)
-                                                                                +len(col_pow_3)
-                                                                                +len(col_pow_5) ,1)),
-                                                                            max_iter,
-                                                                            gamma,
-                                                                            data_valid,
-                                                                            y_valid,
-                                                                            iter_step)
+    w_reg, loss_train_reg, = reg_logistic_regression(y_train, data_train, 0.05,
+                                                        np.zeros((3+len(col_sqrt)
+                                                            +len(col_log)
+                                                            +len(col_nothing_max)
+                                                            +len(col_threshold)
+                                                            +len(col_nothing_norm)
+                                                            +len(col_distance)
+                                                            +len(col_pow_2)
+                                                            +len(col_pow_3)
+                                                            +len(col_pow_5) ,1)),
+                                                        max_iter,
+                                                        gamma,
+                                                        data_valid,
+                                                        y_valid,
+                                                        iter_step)
 
     global_error_reg += global_error(y_valid, data_valid, y_train, data_train, w_reg)
     print("global error for regression is {e}".format(e = global_error_reg))
@@ -318,7 +311,23 @@ for i in range(4):
                                                                             max_iter,
                                                                             gamma)
     global_error_lsg = global_error(y_valid, data_valid, y_train, data_train, w_lsg)
-    print("global error for least squares is {e}".format(e = global_error_ls))
+    print("global error for least squares is {e}".format(e = global_error_lsg))
+
+    """#Least squares gradient descent
+    print("Least squares stochastic gradient descent")
+    w_lss, loss_train_lss = least_squares_GD(y_train, data_train, np.zeros((3+len(col_sqrt)
+                                                                            +len(col_log)
+                                                                            +len(col_nothing_max)
+                                                                            +len(col_threshold)
+                                                                            +len(col_nothing_norm)
+                                                                            +len(col_distance)
+                                                                            +len(col_pow_2)
+                                                                            +len(col_pow_3)
+                                                                            +len(col_pow_5) ,1)),
+                                                                            max_iter,
+                                                                            gamma)
+    global_error_lss = global_error(y_valid, data_valid, y_train, data_train, w_lss)
+    print("global error for stochastic least squares is {e}".format(e = global_error_lss))"""
 
 
 
