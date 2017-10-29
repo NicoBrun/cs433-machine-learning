@@ -4,20 +4,19 @@
 \usepackage{graphicx}	% For figure environment
 
 \begin{document}
-	\title{Project 1 - To the pursuit of the Higgs Boson}
+	\title{Project 1 - finding the Higgs Boson}
 	
 	\author{
 		L\'ea Bommottet, Nicolas Brunner, Karine Perrard\\
-		\textit{ EPFL, Switzerland}
+		\textit{CS-433 Machine Learning, EPFL, Switzerland}
 	}
 	
 	\maketitle
 	
 	\section{Introduction}
 	
-	Sexy introduction about ML and the problem,
-	we choose to have  with 4 different model in function of the data, and all the different models???  
-	30 parameters
+	In this project we have to solve a binary classification problem. In function of a vector of features regarding a proton collision event, we have to determine if this collision produced an Higgs boson or another process,
+	there is at most 30 parameters provided for each classification. We have to implement and use machine learning methods, then feature processing and engineering to solve this problem.
 	
 	\section{Models and methods}
 	
@@ -32,7 +31,7 @@
 	
 	\subsubsection{Linear regression using stochastic gradient descent}
 	
-	The error function is defined as a sum over the training errors. \\
+	The error function is defined as a sum over the training errors: \\
 	$$ L(w) = \sum\limits_{n=1}^N L_n(w)$$
 	As for gradient descent, we want to follow the gradient, but this time the updating step is done on the cost contributed by one of the training examples. We can also compute the gradient on a subset of the examples, this is mini-batch stochastic gradient descent.
 	$$w^{(t+1)}=w^{(t)} -\gamma \nabla L_n(w^{(t)})$$
@@ -55,21 +54,38 @@
 	the explicit solution of w become:
 	$$w_{ridge}^* = (X^\top X+2N\lambda I)^{-1}X^\top y$$
 	\subsubsection{Logistic regression using gradient descent or SGD}
-	Add description + formulas
+	
+	The problem is about separating the outputs into different labels. To do so we use the logitic function, that gives values in the range [0, 1]:
+	$$\sigma(z) := \frac{e^z}{1 + e^z}$$
+	Again we want to minimize the cost function defined as 
+	$$ L(w) = \sum\limits_{n=1}^N ln[1 + e^{x_n^Tw}] - y_nx_n^Tw$$
+	To compute the model, we use gradient descent. The formula is 
+	$$w^{(t+1)}=w^{(t)} -\gamma \nabla L(w^{(t)})$$
+	where  $$\nabla L(w) = X^T[\sigma(Xw) - y]$$ 
+	
 	\subsubsection{Regularized logistic regression using gradient descent or SGD}
-	Add description + formulas
+	We can have troubles if the data is linearly separable. In that case, any vector \textbf{w} having the right direction is solution gives the minimum for \textbf{L(w)}. The goal of regularization is to add a penalty term, which is the length of the vector.
+	$$ w* = argmin_w - \sum\limits_{n=1}^N ln p(y_n|x_n^T, w) + \frac{\lambda}{2}||w||^2 $$
 	
 	
-	The reason we based our model on ??? is because we have the least global error on the dataset. Fig.1 
+	The reason we based our model on ??? is because we have the least global error on the dataset. Fig.?? 
 	
 	Furthermore, in function of the feature named "fit", some parameters are unavailable. Thanks to this important information, we don't train only one model, but 4, since "fit" can be {0,1,2,3}.
-	This idea reduce our global error, when compared to an single model without this separation. Fig.2
+	This idea reduce our global error, when compared to an single model without this separation. Fig.~\ref{fig:noSepFunction}
+	
+	\begin{figure}[tbp]
+		\centering
+		\includegraphics[width=\columnwidth]{valid_train_error_with_thresh_no_jet.png}
+		\caption{Train and Validation error with no separation according to number of iterations}
+		\vspace{-3mm}
+		\label{fig:noSepFunction}
+	\end{figure}
 	
 	\subsection{Choice of parameters}
 	Blablabla
 	Cross-correlation by K-fold:
 	
-	As seen in Fig.3, the parameters that reduces most the train error are lambda = ??? and gamma = ???.
+	As seen in Fig.??, the parameters that reduces most the train error are lambda = ??? and gamma = ???.
 	
 	\subsection{Choice of features}
 	
@@ -86,7 +102,7 @@
 		\item[Nothing norm] \ \\
 		Add description + picture where a parameter is nice
 		\item[Distance] \ \\
-		When we plot 2 parameters in a graph, we can find some correlation between (Fig.3). To reduces this property to a normal distribution, we compute the Manhattan distance. + picture where a parameter is nice
+		When we plot 2 parameters in a graph, we can find some correlation between (Fig.??). To reduces this property to a normal distribution, we compute the Manhattan distance. + picture where a parameter is nice
 		\item[Nth power] \ \\
 		Add description + picture where a parameter is nice
 	\end{description}
@@ -109,7 +125,7 @@
 	
 	\section{Discussion}
 	
-	Separating our model into 4 different ones was a great idea, reducing considerably our global error (Fig.1) in the same way that including more parameters (Fig.2). Those added criterion improve the quality of our model, adjusting from ??? to ???.    
+	Separating our model into 4 different ones was a great idea, reducing considerably our global error (Fig.??) in the same way that including more parameters (Fig.??). Those added criterion improve the quality of our model, adjusting from ??? to ???.    
 	
 	
 	
