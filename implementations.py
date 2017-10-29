@@ -6,23 +6,20 @@ def least_squares_GD(y, tx, initial_w, max_iters, gamma):
     #Linear regression using gradient descent
     """Gradient descent algorithm."""
     w = initial_w
-    val_errors = []
-    train_errors = []
+    threshold = 1e-8
+    losses = []
     for n_iter in range(max_iters):
         gr = compute_gradient(y, tx, w)
+        print(gr)
         loss = compute_mse(y, tx, w)
+        losses.append(loss)
         w = w - gamma * gr
-        if(iter % iter_step == 0) :
-            val_errors.append(np.count_nonzero(predict_labels(w,tx_valid,0.5) - np.reshape(y_valid,(len(y_valid),1)) )/len(y_valid))
-            train_errors.append(np.count_nonzero(predict_labels(w,tx,0.5) - np.reshape(y,(len(y),1)) )/len(y))
-
-        if (iter % 1000== 0):
-            print("step {i}, loss = {l}, gradient = {g}".format(i=iter,l = loss,g=np.linalg.norm(grad)))
+        if (n_iter % 1000== 0):
+            print("step {i}, loss = {l}, gradient = {g}".format(i=n_iter,l = loss,g=np.linalg.norm(gr)))
         if len(losses) > 1 and np.abs(losses[-1] - losses[-2]) < threshold:
             break
 
-    return w,loss, val_errors, train_errors
-    #return w,loss
+    return w,losses
 
 #Linear regression using stochastic gradient descent
 def least_squares_SGD(y, tx, initial_w, max_iters, gamma):
@@ -52,6 +49,7 @@ def least_squares(y, tx):
     else:
         # invertible matrix
         w = np.dot(np.linalg.inv(xtx), np.dot(np.transpose(tx), y))
+    w = w[:, np.newaxis]
     return w,compute_mse(y, tx, w)
 
 
@@ -59,6 +57,7 @@ def ridge_regression(y, tx, lambda_ ):
     # Ridge regression using normal equations
     xtxli = np.dot(np.transpose(tx), tx) + (lambda_ * 2 * len(y)) * np.identity(len(tx[0]))
     w = np.dot(np.linalg.inv(xtxli), np.dot(np.transpose(tx), y))
+    w = w[:, np.newaxis]
     mse = compute_mse(y, tx, w)
     return  w,mse
 

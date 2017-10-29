@@ -3,7 +3,8 @@ import numpy as np
 
 def compute_mse(y, tx, w):
     """compute the loss by mse."""
-    return sum((y - tx @ w)**2) /(2*len(y))
+    e = y[:, np.newaxis] - tx @ w
+    return (e * e).sum() / (2.0 * len(y))
 
 def sigmoid(t):
     """apply sigmoid function on t."""
@@ -59,10 +60,8 @@ def learning_by_penalized_gradient(y, tx, w, gamma, lambda_):
 
 def compute_gradient(y, tx, w):
     """Compute the gradient."""
-    print("compute gradient ")
-    e = y - tx @ w
-    print("error")
-    return  tx.T @ e / (-len(y))
+    e = y[:, np.newaxis] - tx @ w
+    return tx.T @ e / (-len(y))
 
 def standardize2(x,mean,std):
     ''' fill your code in here...
