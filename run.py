@@ -131,13 +131,42 @@ def separate_from_jet(data):
         indexes[int(item[22])].append(ind)
     return indexes
 
+""" separates data into train/test sets according to ratio """
+def split_data(ratio, y_binary, input_data, index, seed = 1):
+    np.random.seed(seed)
+    #index = np.arange(len(input_data))
+    split = int(np.ceil(ratio*len(index)))
+    np.random.shuffle(index)
+
+    y_valid = y_binary[index[:split]]
+    y_train = y_binary[index[split:]]
+
+    x_valid = input_data[index[:split]]
+    x_train = input_data[index[split:]]
+
+    return y_valid, y_train, x_valid, x_train
+
+""" determines the threshold for separating output
+    that gives the smallest error """
+def best_threshold(w, data_train, y_train):
+    thresholds = np.linspace(-5,3,200)
+    best_thresh = 0
+    min_error = 1
+    for thresh in thresholds :
+        pred_thr = predict_labels(w,data_train,thresh)
+        err =np.count_nonzero(np.reshape(y_train, (len(y_train), 1)) - pred_thr)/len(y_train)
+        if(err <= min_error):
+            min_error = err
+            best_thresh = thresh
+    return best_thresh
+
 
 
 data_path = "train.csv"
 seed = 1
 lambda_ = 0.00001
 gamma = 0.00001
-max_iter = 3001
+max_iter = 30001
 iter_step = 200 #to plot validation and training error
 number_feature = 30
 
@@ -167,22 +196,12 @@ threshes = []
 
 for i in range(0,4):
     col_to_delete, col_log, col_sqrt, col_threshold, col_nothing_max, col_nothing_norm, col_distance, col_pow_2, col_pow_3, col_pow_5 = get_columns(i)
-    np.random.seed(seed)
-    index = indexes[i]
-    split = int(np.ceil(0.25*len(index)))
-    np.random.shuffle(index)
-
-    y_valid = y_binary[index[:split]]
-    y_train = y_binary[index[split:]]
-
-
-    x_train = input_data[index[split:]]
+    y_valid, y_train, x_valid, x_train = split_data(0.25, y_binary, input_data, indexes[i])
 
     data_train,mean,std = data_processing(x_train, i, train = True)
 
     means.append(mean)
     stds.append(std)
-    x_valid = input_data[index[:split]]
     data_valid,_,_ = data_processing(x_valid, i, train = False, means = mean, stds = std)
 
 
@@ -194,15 +213,7 @@ for i in range(0,4):
 
     loss_valid = calculate_loss(y_valid,data_valid,w)
 
-    thresholds = np.linspace(-5,3,200)
-    best_thresh = 0
-    min_error = 1
-    for  thresh in thresholds :
-        pred_thr = predict_labels(w,data_train,thresh)
-        err =np.count_nonzero(np.reshape(y_train, (len(y_train), 1)) - pred_thr)/len(y_train)
-        if(err <= min_error):
-            min_error = err
-            best_thresh = thresh
+    best_thresh = best_threshold(w, data_train, y_train)
 
     threshes.append(best_thresh)
     print("for jet {i} the best thresh is {t}".format(i=i,t=best_thresh))
