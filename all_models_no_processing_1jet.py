@@ -154,23 +154,13 @@ cleaned_data = data_arange(input_data)
 y_valid, y_train, x_valid, x_train = split_data(0.25, y_binary, cleaned_data, seed = 1)
 
 
-
-data_train,mean,std = data_processing(x_train, col_to_delete, col_sqrt,col_log,col_nothing_max,col_threshold,col_nothing_norm, col_distance,col_pow_2,col_pow_3,col_pow_5, train = True)
-data_valid,_,_ = data_processing(x_valid, col_to_delete, col_sqrt, col_log,col_nothing_max,col_threshold,col_nothing_norm, col_distance,col_pow_2,col_pow_3,col_pow_5, train = False, means = mean, stds = std)
-
+data_train = x_train
+data_valid = x_valid
 #logistic regression
 # 3 = bias, 1st column, flag column
 w_log, loss_train_log = logistic_regression(y_train,
                                             data_train,
-                                            np.zeros((3+len(col_sqrt)
-                                                +len(col_log)
-                                                +len(col_nothing_max)
-                                                +len(col_threshold)
-                                                +len(col_nothing_norm)
-                                                +len(col_distance)
-                                                +len(col_pow_2)
-                                                +len(col_pow_3)
-                                                +len(col_pow_5) ,1)),
+                                            np.zeros((len(data_train[0]) ,1)),
                                             max_iter,
                                             gamma,
                                             data_valid,
@@ -184,15 +174,7 @@ print("global error is {e}".format(e = global_error_log))
 w_reg, loss_train_reg = reg_logistic_regression(y_train,
                                                 data_train,
                                                 0.05,
-                                                np.zeros((3+len(col_sqrt)
-                                                    +len(col_log)
-                                                    +len(col_nothing_max)
-                                                    +len(col_threshold)
-                                                    +len(col_nothing_norm)
-                                                    +len(col_distance)
-                                                    +len(col_pow_2)
-                                                    +len(col_pow_3)
-                                                    +len(col_pow_5) ,1)),
+                                                np.zeros((len(data_train[0]) ,1)),
                                                 max_iter,
                                                 gamma,
                                                 data_valid,
@@ -219,15 +201,7 @@ print("global error is {e}".format(e = global_error_ls))
 
 #Least squares gradient descent
 print("Least squares gradient descent")
-w_lsg, loss_train_lsg = least_squares_GD(y_train, data_train, np.zeros((3+len(col_sqrt)
-                                                                        +len(col_log)
-                                                                        +len(col_nothing_max)
-                                                                        +len(col_threshold)
-                                                                        +len(col_nothing_norm)
-                                                                        +len(col_distance)
-                                                                        +len(col_pow_2)
-                                                                        +len(col_pow_3)
-                                                                        +len(col_pow_5) ,1)),
+w_lsg, loss_train_lsg = least_squares_GD(y_train, data_train, np.zeros((len(data_train[0]) ,1)),
                                                                         max_iter,
                                                                         gamma)
 global_error_lsg = global_error(y_valid, data_valid, y_train, data_train, w_lsg)
@@ -236,15 +210,7 @@ print("global error is {e}".format(e = global_error_lsg))
 
 #Least squares  stochastic gradient logistic regression
 print("least squares stochastic gradient descent")
-w_lss, loss_train_lss = least_squares_SGD(y_train, data_train, np.zeros((3+len(col_sqrt)
-                                                                        +len(col_log)
-                                                                        +len(col_nothing_max)
-                                                                        +len(col_threshold)
-                                                                        +len(col_nothing_norm)
-                                                                        +len(col_distance)
-                                                                        +len(col_pow_2)
-                                                                        +len(col_pow_3)
-                                                                        +len(col_pow_5) ,1)),
+w_lss, loss_train_lss = least_squares_SGD(y_train, data_train, np.zeros((len(data_train[0]) ,1)),
                                                                         max_iter,
                                                                         gamma)
 global_error_lss = global_error(y_valid, data_valid, y_train, data_train, w_lss)

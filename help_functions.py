@@ -77,21 +77,6 @@ def standardize(x,mean,std) :
     x_new = x_new/std
     return x_new
 
-def stochastic_gradient_descent(
-        y, tx, initial_w, batch_size, max_iters, gamma):
-    """Stochastic gradient descent algorithm."""
-    ws = [initial_w]
-    losses = []
-    w = initial_w
-    for minibatch_y, minibatch_tx in batch_iter(y, tx, batch_size):
-        grad = compute_stoch_gradient(minibatch_y, minibatch_tx, w)
-        loss = compute_loss(minibatch_y, minibatch_tx, w)
-        w = w - gamma*grad
-        ws.append(w)
-        losses.append(loss)
-
-    return losses, ws
-
 def batch_iter(y, tx, batch_size, num_batches=1, shuffle=True):
     """
     Generate a minibatch iterator for a dataset.
