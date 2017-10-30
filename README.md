@@ -9,7 +9,7 @@
 * enlever les print dans implementation.py
 * préparer les fichier que l'on envoye dans un zip (on envoye pas les csv ou le milliard d'image?)
 * finir le rapport
-* run 4 jets avec le bon model
+
 
 ## Done
 * changer les 6 functions models (celle voulue par le project description doivent retourner (w,loss))
@@ -19,3 +19,4 @@
 * faire une image de correlation pour expliquer la feature distance
 * finir cross-validation (10^-5, 10^-5)
 * run cross-validation pour trouver lambda/gamma cool
+* run 4 jets avec le bon model

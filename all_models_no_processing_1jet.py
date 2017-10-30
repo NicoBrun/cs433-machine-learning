@@ -127,7 +127,6 @@ data_path = "train.csv"
 lambda_ = 0.001
 max_iter = 3001
 gamma = 0.00001
-iter_step = 200
 
 col_to_delete = [22]
 col_log = [0, 1, 2, 3, 4, 5, 8, 9, 10, 13, 16, 19, 21, 23, 26, 29]
@@ -154,8 +153,7 @@ w_log, loss_train_log = logistic_regression(y_train,
                                             max_iter,
                                             gamma,
                                             data_valid,
-                                            y_valid,
-                                            iter_step)
+                                            y_valid)
 global_error_log = global_error(y_valid, data_valid, y_train, data_train, w_log)
 print("global error is {e}".format(e = global_error_log))
 
@@ -167,8 +165,7 @@ w_reg, loss_train_reg = reg_logistic_regression(y_train,
                                                 max_iter,
                                                 gamma,
                                                 data_valid,
-                                                y_valid,
-                                                iter_step)
+                                                y_valid)
 global_error_reg = global_error(y_valid, data_valid, y_train, data_train, w_reg)
 print("global error is {e}".format(e = global_error_reg))
 

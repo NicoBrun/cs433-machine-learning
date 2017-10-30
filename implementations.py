@@ -53,7 +53,7 @@ def ridge_regression(y, tx, lambda_ ):
     return  w,mse
 
 
-def logistic_regression(y, tx, initial_w, max_iters, gamma, tx_valid, y_valid,iter_step):
+def logistic_regression(y, tx, initial_w, max_iters, gamma, tx_valid, y_valid):
     #Logistic regression using gradient descent or SGD
     print("regression")
     threshold = 1e-8
@@ -75,7 +75,7 @@ def logistic_regression(y, tx, initial_w, max_iters, gamma, tx_valid, y_valid,it
 
     return w,loss
 
-def reg_logistic_regression(y, tx, lambda_ , initial_w, max_iters, gamma,tx_valid,y_valid,iter_step):
+def reg_logistic_regression(y, tx, lambda_ , initial_w, max_iters, gamma,tx_valid,y_valid):
     #Regularized logistic regression using gradient descent or SGD
     threshold = 1e-8
     losses = []

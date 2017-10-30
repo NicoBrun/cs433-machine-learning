@@ -10,7 +10,6 @@ seed = 1
 lambda_ = 0.00001
 gamma = 0.00001
 max_iter = 30001
-iter_step = 200 #to plot validation and training error
 
 """ returns the columns according to what operations have
     to be done on them in order to get the best model. operations
@@ -228,10 +227,9 @@ for i in range(4):
                                             max_iter,
                                             gamma,
                                             data_valid,
-                                            y_valid,
-                                            iter_step)
+                                            y_valid)
     ws_log.append(w_log)
-    global_error_log += global_error(y_valid, data_valid, y_train, data_train, w_log) 
+    global_error_log += global_error(y_valid, data_valid, y_train, data_train, w_log)
     print("error for log and jet {i} is {e}".format(i = i, e = global_error_log))
 
     # regularized logistic regression
@@ -248,8 +246,7 @@ for i in range(4):
                                                         max_iter,
                                                         gamma,
                                                         data_valid,
-                                                        y_valid,
-                                                        iter_step)
+                                                        y_valid)
 
     global_error_reg += global_error(y_valid, data_valid, y_train, data_train, w_reg)
     print("global error for regression and jet {i} is {e}".format(i = i, e = global_error_reg))

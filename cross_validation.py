@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from proj1_helpers import load_csv_data
-from implementations import logistic_regression,reg_logistic_regression
+from proj1_helpers import *
+from help_functions import logistic_regression,reg_logistic_regression
 
 #function provided in lab4
 def build_k_indices(y, k_fold, seed):
