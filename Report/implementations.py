@@ -48,7 +48,7 @@ def ridge_regression(y, tx, lambda_ ):
     w = np.dot(np.linalg.inv(xtxli), np.dot(np.transpose(tx), y))
     w = w[:, np.newaxis]
     mse = compute_mse(y, tx, w)
-    return  w,mse
+    return w,mse
 
 
 def logistic_regression(y, tx, initial_w, max_iters, gamma, tx_valid, y_valid):

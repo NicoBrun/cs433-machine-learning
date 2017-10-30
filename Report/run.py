@@ -172,13 +172,9 @@ number_feature = 30
 
 feature_to_watch = 7
 
-
-print("début")
-
+# Training
+#load data
 y_binary,input_data,ids = load_csv_data(data_path)
-
-
-#separation along the 22th feature (number of jet) in order to do 4 models
 
 
 indexes = separate_from_jet(input_data)
@@ -186,54 +182,46 @@ indexes = separate_from_jet(input_data)
 ws = []
 means = []
 stds = []
-
-#split 25/75 après on fera du k_fold mais c'est juste une toute première version 5-fold ?
-
 global_error = 0
-
-
 threshes = []
 
+# train on each jet
 for i in range(0,4):
+    #dta processing
     col_to_delete, col_log, col_sqrt, col_threshold, col_nothing_max, col_nothing_norm, col_distance, col_pow_2, col_pow_3, col_pow_5 = get_columns(i)
     y_valid, y_train, x_valid, x_train = split_data(0.25, y_binary, input_data, indexes[i])
 
     data_train,mean,std = data_processing(x_train, i, train = True)
-
     means.append(mean)
     stds.append(std)
     data_valid,_,_ = data_processing(x_valid, i, train = False, means = mean, stds = std)
 
 
     #logistic regression
-    # 3 = bias, 1st column, flag column
     w,loss_train = logistic_regression(y_train,data_train,np.zeros((3+len(col_sqrt)+len(col_log)+len(col_nothing_max)+len(col_threshold)+len(col_nothing_norm)+len(col_distance)+len(col_pow_2)+len(col_pow_3)+len(col_pow_5) ,1)),max_iter,gamma,data_valid,y_valid)
     ws.append(w)
-    print("end training")
 
+    # calculate error for jet i
     loss_valid = calculate_loss(y_valid,data_valid,w)
-
     best_thresh = best_threshold(w, data_train, y_train)
-
     threshes.append(best_thresh)
     print("for jet {i} the best thresh is {t}".format(i=i,t=best_thresh))
+
     training_error = np.count_nonzero(
         predict_labels(w, data_train, best_thresh) - np.reshape(y_train, (len(y_train), 1))) / len(y_train)
-
     pred = predict_labels(w,data_valid,best_thresh)
-
     nnz = np.count_nonzero(np.reshape(y_valid,(len(y_valid),1))-pred)
-
     validation_error = nnz / len(y_valid)
+
     global_error += (len(y_valid)+len(y_train)) * validation_error #est-ce vraiment juste de comptpter le train ?
-    #print(w.T)
     print("For jet {i} loss ={l} validation_error = {e} and training_error = {t}".format(i=i, l = loss_valid, e = validation_error,t=training_error))
 
-global_error /= len(y_binary)
 
+global_error /= len(y_binary)
 print("global error is {e}".format(e = global_error))
 
 
+# Prediction
 input_test, ids = load_test_csv("test.csv")
 
 #features processing
@@ -243,24 +231,16 @@ indexes_test = separate_from_jet(input_test)
 for i in range(0,4):
     x_test = input_test[indexes_test[i]]
 
-    #process the first column wuth adding a flag
+    #process the first column by adding a flag
     data_test,_,_ = data_processing(x_test, i,train= False, means= means[i], stds = stds[i])
 
-    #prediction
-
     y_test = predict_labels(ws[i],data_test,threshes[i])
-
     y_test[y_test == 0] = -1
 
-
-
     sol = np.concatenate((y_test,np.reshape(ids[indexes_test[i]],(len(y_test),1))), axis = 1)
-
     if(i == 0):
         sols.append(sol)
     else :
         sols[0] = np.concatenate((sols[0],sol),axis = 0)
 
-
-
-create_csv_submission(sols[0][:,1],sols[0][:,0],"4jet_feat_process_30000_2.csv")
+create_csv_submission(sols[0][:,1],sols[0][:,0],"4jet_feat_process_30000.csv")
