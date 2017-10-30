@@ -152,35 +152,6 @@ def split_data(ratio, y_binary, input_data, index, seed = 1):
 
     return y_valid, y_train, x_valid, x_train
 
-""" returns the predicted y datas according to jet """
-def prediction_solutions(test_path, ws, means, stds):
-    input_test, ids = load_test_csv(test_path)
-
-    #features processing
-
-    indexes_test = separate_from_jet(input_test)
-    sols = []
-
-    for i in range(0,4):
-        x_test = input_test[indexes_test[i]]
-
-        #process the first column with adding a flag
-        data_test, _, _ = data_processing(x_test, i, train= False, means= means[i], stds = stds[i])
-
-        #prediction
-        y_test = predict_labels(ws[i], data_test, threshes[i])
-        y_test[y_test == 0] = -1
-
-        sol = np.concatenate((y_test,np.reshape(ids[indexes_test[i]],(len(y_test),1))), axis = 1)
-
-        if(i == 0):
-            sols.append(sol)
-        else :
-            print(sols[0].shape)
-            sols[0] = np.concatenate((sols[0],sol),axis = 0)
-
-    return sols
-
 """ determines the threshold for separating output
     that gives the smallest error """
 def best_treshold(w, data_train, y_train):
@@ -238,6 +209,7 @@ for i in range(4):
     col_to_delete, col_log, col_sqrt, col_threshold, col_nothing_max, col_nothing_norm, col_distance, col_pow_2, col_pow_3, col_pow_5 = get_columns(i)
 
     #logistic regression
+    print("logistic regression")
     w_log,loss_train_log = logistic_regression(y_train,
                                             data_train,
                                             np.zeros((len(data_train[0]) ,1)),
@@ -250,6 +222,7 @@ for i in range(4):
     print("error for log and jet {i} is {e}".format(i = i, e = global_error_log))
 
     # regularized logistic regression
+    print("regularized logistic regression")
     w_reg, loss_train_reg, = reg_logistic_regression(y_train, data_train, 0.05,
                                                         np.zeros((len(data_train[0]) ,1)),
                                                         max_iter,

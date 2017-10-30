@@ -151,6 +151,7 @@ data_train,mean,std = data_processing(x_train, col_to_delete, col_sqrt,col_log,c
 data_valid,_,_ = data_processing(x_valid, col_to_delete, col_sqrt, col_log,col_nothing_max,col_threshold,col_nothing_norm, col_distance,col_pow_2,col_pow_3,col_pow_5, train = False, means = mean, stds = std)
 
 #logistic regression
+print("logistic regression")
 w_log, loss_train_log = logistic_regression(y_train,
                                             data_train,
                                             np.zeros((3+len(col_sqrt)
@@ -171,6 +172,7 @@ global_error_log = global_error(y_valid, data_valid, y_train, data_train, w_log)
 print("global error is {e}".format(e = global_error_log))
 
 # regularized logistic regression
+print("regularized logistic regression")
 w_reg, loss_train_reg = reg_logistic_regression(y_train,
                                                 data_train,
                                                 0.05,

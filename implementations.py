@@ -10,8 +10,6 @@ def least_squares_GD(y, tx, initial_w, max_iters, gamma):
         gr = compute_gradient(y, tx, w)
         loss = compute_mse(y, tx, w)
         w = w - gamma * gr
-        if (n_iter % 1000== 0):
-            print("step {i}, loss = {l}, gradient = {g}".format(i=n_iter,l = loss,g=np.linalg.norm(gr)))
     return w,loss
 
 #Linear regression using stochastic gradient descent
@@ -55,7 +53,6 @@ def ridge_regression(y, tx, lambda_ ):
 
 def logistic_regression(y, tx, initial_w, max_iters, gamma, tx_valid, y_valid):
     #Logistic regression using gradient descent or SGD
-    print("regression")
     threshold = 1e-8
     losses = []
     w = initial_w
@@ -67,11 +64,6 @@ def logistic_regression(y, tx, initial_w, max_iters, gamma, tx_valid, y_valid):
         prev_grad = grad
         # converge criterion
         losses.append(loss)
-        # TODO remove print
-        if (iter % 1000== 0):
-            print("step {i}, loss = {l}, gradient = {g}".format(i=iter,l = loss,g=np.linalg.norm(grad)))
-        if len(losses) > 1 and np.abs(losses[-1] - losses[-2]) < threshold:
-            break
 
     return w,loss
 
@@ -86,10 +78,5 @@ def reg_logistic_regression(y, tx, lambda_ , initial_w, max_iters, gamma,tx_vali
         loss, w,grad = learning_by_penalized_gradient(y, tx, w, gamma, lambda_)
         # converge criterion
         losses.append(loss)
-        # TODO remove print
-        if (iter % 1000== 0):
-            print("step {i}, loss = {l}, gradient = {g}".format(i=iter,l = loss,g=np.linalg.norm(grad)))
-        if len(losses) > 1 and np.abs(losses[-1] - losses[-2]) < threshold:
-            break
 
     return w,loss

@@ -107,7 +107,6 @@ def batch_iter(y, tx, batch_size, num_batches=1, shuffle=True):
     train error to have nice plots """
 def logistic_regression(y, tx, initial_w, max_iters, gamma, tx_valid, y_valid,iter_step):
     #Logistic regression using gradient descent or SGD
-    print("regression")
     threshold = 1e-8
     losses = []
     w = initial_w

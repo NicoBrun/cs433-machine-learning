@@ -147,6 +147,7 @@ cleaned_data = data_arange(input_data)
 y_valid, y_train, data_valid, data_train = split_data(0.25, y_binary, cleaned_data, seed = 1)
 
 #logistic regression
+print("logistic regression")
 w_log, loss_train_log = logistic_regression(y_train,
                                             data_train,
                                             np.zeros((len(data_train[0]) ,1)),
@@ -158,6 +159,7 @@ global_error_log = global_error(y_valid, data_valid, y_train, data_train, w_log)
 print("global error is {e}".format(e = global_error_log))
 
 # regularized logistic regression
+print("regularized logistic regression")
 w_reg, loss_train_reg = reg_logistic_regression(y_train,
                                                 data_train,
                                                 0.05,

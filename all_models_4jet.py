@@ -213,6 +213,7 @@ for i in range(4):
     data_valid, _, _ = data_processing(x_valid, i, train = False, means = mean, stds = std)
 
     #logistic regression
+    print("logistic regression")
     w_log,loss_train_log = logistic_regression(y_train,
                                             data_train,
                                             np.zeros((3+len(col_sqrt)+
@@ -233,6 +234,7 @@ for i in range(4):
     print("error for log and jet {i} is {e}".format(i = i, e = global_error_log))
 
     # regularized logistic regression
+    print("regularized logistic regression")
     w_reg, loss_train_reg, = reg_logistic_regression(y_train, data_train, 0.05,
                                                         np.zeros((3+len(col_sqrt)
                                                             +len(col_log)
