@@ -129,11 +129,7 @@ max_iter = 3001
 gamma = 0.00001
 iter_step = 200
 
-number_feature = 30
-
-feature_to_watch = 7
-
-col_to_delete = [22]  # almost constants values
+col_to_delete = [22]
 col_log = [0, 1, 2, 3, 4, 5, 8, 9, 10, 13, 16, 19, 21, 23, 26, 29]
 col_sqrt = [0, 13, 16, 21, 23, 26, 29]
 col_threshold = [11, 12]
@@ -145,9 +141,6 @@ col_pow_3 = [19]
 col_pow_5 = []
 
 y_binary,input_data,ids = load_csv_data(data_path)
-
-#split 25/75 après on fera du k_fold mais c'est juste une toute première version 5-fold ?
-
 #Training part
 
 cleaned_data = data_arange(input_data)
@@ -159,7 +152,6 @@ data_train,mean,std = data_processing(x_train, col_to_delete, col_sqrt,col_log,c
 data_valid,_,_ = data_processing(x_valid, col_to_delete, col_sqrt, col_log,col_nothing_max,col_threshold,col_nothing_norm, col_distance,col_pow_2,col_pow_3,col_pow_5, train = False, means = mean, stds = std)
 
 #logistic regression
-# 3 = bias, 1st column, flag column
 w_log, loss_train_log = logistic_regression(y_train,
                                             data_train,
                                             np.zeros((3+len(col_sqrt)

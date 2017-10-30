@@ -6,7 +6,6 @@ from help_functions import calculate_loss,standardize
 from proj1_helpers import load_csv_data,load_test_csv,predict_labels,create_csv_submission
 
 data_path = "train.csv"
-name_error_image = "valid_train_error_with_thresh.png"
 seed = 1
 lambda_ = 0.00001
 gamma = 0.00001
@@ -153,35 +152,6 @@ def split_data(ratio, y_binary, input_data, index, seed = 1):
 
     return y_valid, y_train, x_valid, x_train
 
-""" returns the predicted y datas according to jet """
-def prediction_solutions(test_path, ws, means, stds):
-    input_test, ids = load_test_csv(test_path)
-
-    #features processing
-
-    indexes_test = separate_from_jet(input_test)
-    sols = []
-
-    for i in range(0,4):
-        x_test = input_test[indexes_test[i]]
-
-        #process the first column with adding a flag
-        data_test, _, _ = data_processing(x_test, i, train= False, means= means[i], stds = stds[i])
-
-        #prediction
-        y_test = predict_labels(ws[i], data_test, threshes[i])
-        y_test[y_test == 0] = -1
-
-        sol = np.concatenate((y_test,np.reshape(ids[indexes_test[i]],(len(y_test),1))), axis = 1)
-
-        if(i == 0):
-            sols.append(sol)
-        else :
-            print(sols[0].shape)
-            sols[0] = np.concatenate((sols[0],sol),axis = 0)
-
-    return sols
-
 """ determines the threshold for separating output
     that gives the smallest error """
 def best_treshold(w, data_train, y_train):
@@ -208,7 +178,7 @@ def global_error(y_valid, data_valid, y_train, data_train, w):
     global_error = (len(y_valid)+len(y_train)) * nnz
     return global_error
 
-print("début")
+print("start")
 
 #load data and separate it into 4 according to their jet
 y_binary,input_data,ids = load_csv_data(data_path)
@@ -261,7 +231,7 @@ for i in range(4):
                                             y_valid,
                                             iter_step)
     ws_log.append(w_log)
-    global_error_log += global_error(y_valid, data_valid, y_train, data_train, w_log) #est-ce vraiment juste de compter le train ?
+    global_error_log += global_error(y_valid, data_valid, y_train, data_train, w_log) 
     print("error for log and jet {i} is {e}".format(i = i, e = global_error_log))
 
     # regularized logistic regression

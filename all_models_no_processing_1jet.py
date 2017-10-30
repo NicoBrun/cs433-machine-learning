@@ -129,11 +129,7 @@ max_iter = 3001
 gamma = 0.00001
 iter_step = 200
 
-number_feature = 30
-
-feature_to_watch = 7
-
-col_to_delete = [22]  # almost constants values
+col_to_delete = [22]
 col_log = [0, 1, 2, 3, 4, 5, 8, 9, 10, 13, 16, 19, 21, 23, 26, 29]
 col_sqrt = [0, 13, 16, 21, 23, 26, 29]
 col_threshold = [11, 12]
@@ -146,18 +142,12 @@ col_pow_5 = []
 
 y_binary,input_data,ids = load_csv_data(data_path)
 
-#split 25/75 après on fera du k_fold mais c'est juste une toute première version 5-fold ?
-
 #Training part
 
 cleaned_data = data_arange(input_data)
-y_valid, y_train, x_valid, x_train = split_data(0.25, y_binary, cleaned_data, seed = 1)
+y_valid, y_train, data_valid, data_train = split_data(0.25, y_binary, cleaned_data, seed = 1)
 
-
-data_train = x_train
-data_valid = x_valid
 #logistic regression
-# 3 = bias, 1st column, flag column
 w_log, loss_train_log = logistic_regression(y_train,
                                             data_train,
                                             np.zeros((len(data_train[0]) ,1)),
@@ -166,7 +156,6 @@ w_log, loss_train_log = logistic_regression(y_train,
                                             data_valid,
                                             y_valid,
                                             iter_step)
-
 global_error_log = global_error(y_valid, data_valid, y_train, data_train, w_log)
 print("global error is {e}".format(e = global_error_log))
 
@@ -180,14 +169,12 @@ w_reg, loss_train_reg = reg_logistic_regression(y_train,
                                                 data_valid,
                                                 y_valid,
                                                 iter_step)
-
 global_error_reg = global_error(y_valid, data_valid, y_train, data_train, w_reg)
 print("global error is {e}".format(e = global_error_reg))
 
 # ridge regression
 print("ridge regression")
 w_rid, loss_train_rid = ridge_regression(y_train, data_train, 0.05)
-
 global_error_rid = global_error(y_valid, data_valid, y_train, data_train, w_rid)
 print("global error is {e}".format(e = global_error_rid))
 

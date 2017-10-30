@@ -233,17 +233,11 @@ global_error_lss = 0
 global_error_rid  = 0
 
 for i in range(4):
-    #train/test ratio is 0.75/0.25 for now
-    y_valid, y_train, x_valid, x_train = split_data(0.25, y_binary, input_data, indexes[i])
+    y_valid, y_train, data_valid, data_train = split_data(0.25, y_binary, input_data, indexes[i])
 
     # process data
     col_to_delete, col_log, col_sqrt, col_threshold, col_nothing_max, col_nothing_norm, col_distance, col_pow_2, col_pow_3, col_pow_5 = get_columns(i)
-    #data_train, mean, std = data_processing(x_train, i, train = True)
-    #means.append(mean)
-    #stds.append(std)
-    #data_valid, _, _ = data_processing(x_valid, i, train = False, means = mean, stds = std)
-    data_train = x_train
-    data_valid = x_valid
+
     #logistic regression
     w_log,loss_train_log = logistic_regression(y_train,
                                             data_train,
@@ -254,7 +248,7 @@ for i in range(4):
                                             y_valid,
                                             iter_step)
     ws_log.append(w_log)
-    global_error_log += global_error(y_valid, data_valid, y_train, data_train, w_log) #est-ce vraiment juste de compter le train ?
+    global_error_log += global_error(y_valid, data_valid, y_train, data_train, w_log)
     print("error for log and jet {i} is {e}".format(i = i, e = global_error_log))
 
     # regularized logistic regression
