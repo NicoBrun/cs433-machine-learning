@@ -1,0 +1,14 @@
+\BOOKMARK [1][-]{section.1}{Introduction}{}% 1
+\BOOKMARK [1][-]{section.2}{Models and methods}{}% 2
+\BOOKMARK [2][-]{subsection.2.1}{Choice of Models}{section.2}% 3
+\BOOKMARK [3][-]{subsubsection.2.1.1}{Linear regression using gradient descent}{subsection.2.1}% 4
+\BOOKMARK [3][-]{subsubsection.2.1.2}{Linear regression using stochastic gradient descent}{subsection.2.1}% 5
+\BOOKMARK [3][-]{subsubsection.2.1.3}{Least squares regression using normal equations}{subsection.2.1}% 6
+\BOOKMARK [3][-]{subsubsection.2.1.4}{Ridge regression using normal equations}{subsection.2.1}% 7
+\BOOKMARK [3][-]{subsubsection.2.1.5}{Logistic regression using gradient descent or SGD}{subsection.2.1}% 8
+\BOOKMARK [3][-]{subsubsection.2.1.6}{Regularized logistic regression using gradient descent or SGD}{subsection.2.1}% 9
+\BOOKMARK [2][-]{subsection.2.2}{Choice of parameters}{section.2}% 10
+\BOOKMARK [2][-]{subsection.2.3}{Choice of features}{section.2}% 11
+\BOOKMARK [1][-]{section.3}{Results}{}% 12
+\BOOKMARK [1][-]{section.4}{Summary}{}% 13
+\BOOKMARK [1][-]{section*.1}{References}{}% 14
