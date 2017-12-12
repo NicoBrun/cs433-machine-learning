@@ -1,29 +1,33 @@
 import numpy as np
+from PIL import Image
+import skimage.filters
+import skimage.morphology
+import skimage.transform
+import matplotlib.pyplot as plt
+
 from Model import Model
 class ColorDistanceModel(Model):
     def __init__(self, tolerance=5.0):
         self.tolerance = tolerance
 
-    def distance(self, rgb):
-        mean_grey = 127
-        r = (rgb[0] - 123)**2
-        g = (rgb[1] - 119)**2
-        b = (rgb[2] - 111)**2
-        return np.sqrt(r + g + b) #* 20
-
-    def dist_mean(self, col):
-        if(col < 150):
-            return 255
-        else:
-            return 0
-
-
     def predict(self, image):
+        image = np.asarray(image, dtype=np.float32) / 255.0
+        ref = np.array([124, 118, 113], dtype=np.float32) / 255.0
 
-        new_img = np.zeros(image.shape, dtype=np.float32)
-        for i in range(len(image)):
-            for j in range(len(image[0])):
-                #print(image[i][j].shape)
-                new_img[i][j] = self.distance(image[i][j])
-        #return np.zeros(image.shape, dtype=np.float32)
-        return new_img
+        distances = np.sqrt(((image - ref[np.newaxis, np.newaxis, :]) ** 2.0).sum(axis=2))
+
+        probabilities = (1.0 - (distances - 0.1) * 5.0).clip(0.0, 1.0)
+
+        #probabilities = np.arctan2(skimage.filters.sobel_h(probabilities), skimage.filters.sobel_v(probabilities))
+        #probabilities = skimage.filters.gaussian(probabilities, sigma=5.0)
+
+        shape = skimage.morphology.square(3)
+        probabilities = skimage.morphology.opening(probabilities, shape)
+
+        #probabilities = skimage.morphology.closing(probabilities, shape)
+
+
+
+
+
+        return probabilities
