@@ -15,7 +15,7 @@ gt_path = "training/groundtruth/"
 preprocessed_img_path = "training/images/"
 preprocessed_gt_path = "training/groundtruth/"
 
-precomputed_model = "hype1000.h5"
+precomputed_model = "16-12-2017-model-1.h5"
 load_model = True
 data_augmentation = True
 patch_size = 16
