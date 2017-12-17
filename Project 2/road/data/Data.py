@@ -1,6 +1,6 @@
 import numpy as np
 from skimage.transform import rotate
-import os,sys
+import os, sys
 
 class Data:
 
