@@ -18,3 +18,10 @@ The notebook shows how to use `scikit learn` to generate features from each pixe
 
 Evaluation Metric:
  [https://www.kaggle.com/wiki/MeanFScore]
+
+
+## Installation:
+
+'conda install keras'
+
+'pip install tensorflow'
