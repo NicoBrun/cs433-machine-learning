@@ -34,7 +34,7 @@ model.add(Dense(1))
 model.add(Activation('sigmoid'))
 
 results: 0.87
-time to create model: 24h
+time to create model: 14h
 
 
 
@@ -77,3 +77,8 @@ model.add(Activation('sigmoid'))
 
 results: 
 time to create model: 5h
+
+#model 3:
+
+comme model 1
+batch_size =  128
