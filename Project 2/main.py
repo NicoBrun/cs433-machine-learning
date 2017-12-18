@@ -15,7 +15,7 @@ gt_path = "training/groundtruth/"
 preprocessed_img_path = "training/images/"
 preprocessed_gt_path = "training/groundtruth/"
 
-precomputed_model = "16-12-2017-model-1.h5"
+precomputed_model = "saved models/model 3.h5"
 load_model = True
 data_augmentation = True
 patch_size = 16
@@ -55,7 +55,7 @@ id = 5
 NeuralNet.predict_one_img(preprocessed_img_path, id)
 
 test_path = "test_set_images/"
-submission_name = 'swagmaster12345' 
+submission_name = 'model_c' 
 test_set_results = "test_set_results_"+submission_name+"/"
 
 print("* start predictions on the test set")
