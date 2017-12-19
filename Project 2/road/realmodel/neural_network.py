@@ -33,8 +33,8 @@ def saveTestImgsOutput(predictions, results_path, patch_size):
     if not os.path.isdir(results_path):
         os.makedirs(results_path)
     w = 608
-    h = 608
-    size = 1444
+    h = 608 
+    size = 1444*int((16/patch_size)**2)
     n = 50
     for i in range(n):
         predicted_im = label_to_img(w, h, patch_size, patch_size, predictions[size*i:size*(i+1)])
