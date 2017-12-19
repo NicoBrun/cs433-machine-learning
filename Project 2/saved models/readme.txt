@@ -88,6 +88,7 @@ result:0.86376
 
 #model 4:
 
+patch_size = 8
 test_size = 0.2
 batch_size = 64
 epoch = 200
