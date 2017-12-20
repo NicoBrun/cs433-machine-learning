@@ -15,10 +15,10 @@ gt_path = "training/groundtruth/"
 preprocessed_img_path = "training/images/"
 preprocessed_gt_path = "training/groundtruth/"
 
-precomputed_model = "saved models/model 4.h5"
+precomputed_model = "saved models/model 6.h5"
 load_model = True
 data_augmentation = True
-patch_size = 8
+patch_size = 16
 
 #TODO créer cette fonction dans un package
 def preprocess_imgs(a,b,c,d):
@@ -55,7 +55,7 @@ id = 5
 NeuralNet.predict_one_img(preprocessed_img_path, id)
 
 test_path = "test_set_images/"
-submission_name = 'model_d' 
+submission_name = 'model_f' 
 test_set_results = "test_set_results_"+submission_name+"/"
 
 print("* start predictions on the test set")

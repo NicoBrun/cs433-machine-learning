@@ -117,3 +117,12 @@ model.add(Activation('sigmoid'))
 
 results:
 time to create model: 5h
+
+
+
+
+
+
+#model 11
+Test loss: 0.339187149124
+Test accuracy: 0.845840000038
