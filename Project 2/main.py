@@ -1,9 +1,10 @@
 """Main file to run"""
 
 #imports
-import road.realdata.data as data
-import road.realhelper.mask_to_submission as mask2sub
-import road.realmodel.neural_network as NeuralNet
+import road.data.data as data
+import road.helper.mask_to_submission as mask2sub
+import road.model.neural_network as NeuralNet
+import road.image_procesing.PostProcess as postProc
 
 #we preprocess the images
 
@@ -31,7 +32,7 @@ print("* initialising model")
 
 #choose if we want to load a nn model from an existing file, or create a new model using training on the patchs
 if load_model:
-    print("* loadîng model")
+    print("* loading model")
     model = NeuralNet.from_file(precomputed_model)
     print("* finished loading")
     print(" * model summary")
@@ -44,13 +45,19 @@ else:
 
 
 test_set_results = "test_set_results_"+submission_name+"/"
+post_process_test_results = "post_process_"+submission_name+"/"
 
 #predict the image
 print("* start predictions on the test set")
 NeuralNet.predict_and_save_test_imgs(model, test_path, test_set_results, patch_size)
 print("* finished prediction")
+
+
+print("*start post-processing")
+postProc.post_process(test_set_results,post_process_test_results)
+print("*end of post-processing")
 #now that we have the final images, we create the submission file
 print("* creating submission file")
-mask2sub.run(submission_name+".csv", "test_set_results_"+submission_name+"/")
+mask2sub.run(submission_name+".csv", post_process_test_results)
 
 print("* Finished")
