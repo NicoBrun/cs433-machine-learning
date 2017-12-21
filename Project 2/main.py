@@ -11,15 +11,16 @@ import road.image_procesing.PostProcess as postProc
 img_path = "training/images/"
 gt_path = "training/groundtruth/"
 
-precomputed_model = "saved models/model_final.h5"
+precomputed_model = "saved models/model 1.h5"
 load_model = True
 data_augmentation = True
+post_process = True
 patch_size = 16
 
 test_path = "test_set_images/"
-submission_name = 'model_final' 
+submission_name = 'model_best' 
 
-post_process = True
+
 
 print("* loading images")
 training_patch_x, training_patch_y = data.create_xy_from_patch(img_path, gt_path, patch_size)
