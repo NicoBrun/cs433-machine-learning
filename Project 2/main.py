@@ -4,33 +4,23 @@
 import road.realdata.data as data
 import road.realhelper.mask_to_submission as mask2sub
 import road.realmodel.neural_network as NeuralNet
-#load the data
-#data = Data.Data()
 
 #we preprocess the images
 
 img_path = "training/images/"
 gt_path = "training/groundtruth/"
 
-preprocessed_img_path = "training/images/"
-preprocessed_gt_path = "training/groundtruth/"
-
-precomputed_model = "saved models/model 11.h5"
+precomputed_model = "saved models/model_final.h5"
 load_model = True
 data_augmentation = True
 patch_size = 16
 
-#TODO créer cette fonction dans un package
-def preprocess_imgs(a,b,c,d):
-    pass
+test_path = "test_set_images/"
+submission_name = 'model_final' 
 
-print("* started preprocessing")
-#create preprocessed imgs into a new path
-preprocess_imgs(img_path, preprocessed_img_path, gt_path, preprocessed_gt_path)
 
-print("* finished preprocessing")
-print("* loading preprocessed images")
-training_patch_x, training_patch_y = data.create_xy_from_patch(preprocessed_img_path, preprocessed_gt_path, patch_size)
+print("* loading images")
+training_patch_x, training_patch_y = data.create_xy_from_patch(img_path, gt_path, patch_size)
 
 print("    patches X of shape: "+str(training_patch_x.shape))
 print("    patches Y of shape: "+str(training_patch_y.shape))
@@ -44,22 +34,20 @@ if load_model:
     print("* loadîng model")
     model = NeuralNet.from_file(precomputed_model)
     print("* finished loading")
+    print(" * model summary")
+    model.summary()
 else:
     print("* start the training of the model")
-    model = NeuralNet.create_model(training_patch_x, training_patch_y, data_augmentation)
-    model.save('yolo.h5')
-print(" * model summary")
-model.summary()
+    model = NeuralNet.create_model(training_patch_x, training_patch_y, data_augmentation, patch_size)
+    model.save(submission_name+'.h5')
 
-id = 5
-NeuralNet.predict_one_img(preprocessed_img_path, id)
 
-test_path = "test_set_images/"
-submission_name = 'model_k' 
+
 test_set_results = "test_set_results_"+submission_name+"/"
 
+#predict the image
 print("* start predictions on the test set")
-NeuralNet.predict_and_save_test_imgs(model,test_path,test_set_results, patch_size)
+NeuralNet.predict_and_save_test_imgs(model, test_path, test_set_results, patch_size)
 print("* finished prediction")
 #now that we have the final images, we create the submission file
 print("* creating submission file")
