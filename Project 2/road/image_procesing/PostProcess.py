@@ -18,6 +18,7 @@ def filter_thresh(image, threshold, kernel_w, kernel_h, squared=False, fill_hole
 
     return image
 
+# switch from the 38x38 image (one point per batch) to a 608x608 (full image)
 def resize(imgs,new_size,n,pixel_size):
     imgs_resized = np.zeros((n, new_size, new_size))
     s = len(imgs[0])
@@ -29,6 +30,7 @@ def resize(imgs,new_size,n,pixel_size):
                     j, k]
     return imgs_resized
 
+# affine prediction
 def post_process(prediction_file_name, save_file_name):
     if not os.path.isdir(save_file_name):
         os.makedirs(save_file_name)

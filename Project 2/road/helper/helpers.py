@@ -3,6 +3,8 @@ import matplotlib.image as mpimg
 
 foreground_threshold = 0.25 # percentage of pixels > 1 required to assign a foreground label to a patch
 
+#functions come from the given python notebook
+
 # assign a label to a patch
 def patch_to_label(patch):
     df = np.mean(patch)
@@ -21,6 +23,7 @@ def value_to_class(v):
 def load_image(infilename):
     data = mpimg.imread(infilename)
     return data
+
 
 def img_crop(im, w, h):
     list_patches = []

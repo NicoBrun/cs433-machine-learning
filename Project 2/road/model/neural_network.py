@@ -58,7 +58,7 @@ def create_model(X,Y,data_augmentation, patch_size):
     model.add(Activation('relu'))
     model.add(MaxPooling2D(pool_size=(maxPool2D_size, maxPool2D_size)))
 
-    #
+    # classifier
     model.add(Flatten())
     model.add(Dense(batch_size))
     model.add(Activation('relu'))
@@ -88,11 +88,13 @@ def create_model(X,Y,data_augmentation, patch_size):
 
     return model
 
+# make the prediction and save it
 def predict_and_save_test_imgs(model, test_path, results_path, patch_size):
     imgs_patch = load_test_imgs(test_path, patch_size)
     predictions = model.predict(imgs_patch)
     saveTestImgsOutput(predictions, results_path, patch_size)
 
+# load test images
 def load_test_imgs(test_path, patch_size):
     n=50
     test_directory = test_path+"/test_"
@@ -101,6 +103,7 @@ def load_test_imgs(test_path, patch_size):
     img_patches = np.asarray([img_patches[i][j] for i in range(len(img_patches)) for j in range(len(img_patches[i]))])
     return np.asarray(img_patches)
 
+# save outputs for test images in the folder found in results_path
 def saveTestImgsOutput(predictions, results_path, patch_size):
     if not os.path.isdir(results_path):
         os.makedirs(results_path)
