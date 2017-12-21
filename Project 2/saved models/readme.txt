@@ -125,6 +125,10 @@ comme model 1 mais sans image augmentation
 Test loss: 1.91540325628
 Test accuracy: 0.826080000038
 
+#model 8 
+Test loss: 0.356196646347
+Test accuracy: 0.83832
+
 #model 11
 Test loss: 0.339187149124
 Test accuracy: 0.845840000038
