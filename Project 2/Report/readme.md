@@ -8,39 +8,41 @@ The project needs some python libraries:
 ```
 numpy
 matplotlib
+os
+sys
+Image
+math
 ```
 
-This project needs also a deep learning library named (Keras)[keras.io] and this library run on top of (Tensorflow)[https://www.tensorflow.org/]
+This project needs also a deep learning library named [Keras](keras.io) and this library run on top of [Tensorflow](https://www.tensorflow.org/).
+
+To install those 2 externals libraries, run in a shell:
+```
+pip install keras
+pip install tensorflow
+```
+
 
 ### Installing
 
-All the files has to be in the same folder as train.csv and test.csv. Those files are not included in the repo.
+Exctract the zip file, you should have the file "run.py" and the folders named "road" and "saved_model". 
+
+We provide an already trained model inside the "saved_model" if you don't want to to recrate a model from scratch.
+
+You should have also the 2 zip files from kaggle.com containing the training and the test set.
+Extract them into the same folder; the directory contains now 4 folders named "road", "saved_model", "training" and "test_set_images".
+
+You are ready!
+
 
 ## Getting Started
 
-Git clone this repo and then run:
 To get the prediction file; in shell, go to project directory and then run
+
 ```
 python run.py
 ```
-The computation lasts for around 5 min on a i5 core
-Its output is in 4jet_feat_process_30000.csv
 
-To get the errors per model run
-```
-python all_models_1jet.py
-python all_models_4jet.py
-python all_models_no_processing_1jet.py
-python all_models_no_processing_4jet.py
-```
-
-To visualize the data run
-```
-python visu_correlation.py
-python cross_validation.py
-```
-The output of cross_validation is in cross_validation.png
-
-All the files need the proj1_helpers.py, help_functions.py and implementations.py files to run.
-
+It will load the precomputed model and use it to create the images prediction in the folder "test_set_result_model_final".
+Then it will create the prediction file from this set of image and save it under "model_final.csv"
 
