@@ -22,6 +22,8 @@ pip install keras
 pip install tensorflow
 ```
 
+Note that our work doesn't use GPU and the time estimations are based on CPU computation only.
+
 
 ### Installing
 
@@ -45,6 +47,8 @@ python run.py
 
 It will load the precomputed model and use it to create the images prediction in the folder "test_set_result_model_final".
 Then it will create the prediction file from this set of image and save it under "model_final.csv"
+
+Creating the prediction will take between 5 and 10 minutes.
 
 ## Create the model from scratch
 
