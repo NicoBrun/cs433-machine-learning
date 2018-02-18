@@ -56,4 +56,4 @@ Instead of loading the model from "saved_model", we can create a new one from th
 In this case open run.py and change the value of load_model to False.
 You can also choose if you want data augmentation and post processing by setting the boolean parameter.
 
-Creating the model from scrath took us around +-20h, with data augmentation.
+Creating the model from scratch took us around +-20h, with data augmentation.
