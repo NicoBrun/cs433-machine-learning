@@ -1,27 +1,59 @@
-# Project Road Segmentation
+# Machine Learning Project 2: road Segmentation
 
-For this choice of project task, we provide a set of satellite images acquired from GoogleMaps.
-We also provide ground-truth images where each pixel is labeled as road or background. 
+This project is about solving a binary classification problem. Given an image, we have to determine if every patch of 16x16 pixels in this image is either a road or not {1 or 0}.
 
-Your task is to train a classifier to segment roads in these images, i.e. assigns a label `road=1, background=0` to each pixel.
+### Prerequisites
 
-Submission system environment setup:
+The project needs some python libraries:
+```
+numpy
+matplotlib
+os
+sys
+Image
+math
+```
 
-1. The dataset is available from the Kaggle page, as linked in the PDF project description
+This project needs also a deep learning library named [Keras](keras.io) and this library run on top of [Tensorflow](https://www.tensorflow.org/).
 
-2. Obtain the python notebook `segment_aerial_images.ipynb` from this github folder,
-to see example code on how to extract the images as well as corresponding labels of each pixel.
+To install those 2 externals libraries, run in a shell:
+```
+pip install keras
+pip install tensorflow
+```
 
-The notebook shows how to use `scikit learn` to generate features from each pixel, and finally train a linear classifier to predict whether each pixel is road or background. Or you can use your own code as well. Our example code here also provides helper functions to visualize the images, labels and predictions. In particular, the two functions `mask_to_submission.py` and `submission_to_mask.py` help you to convert from the submission format to a visualization, and vice versa.
-
-3. As a more advanced approach, try `tf_aerial_images.py`, which demonstrates the use of a basic convolutional neural network in TensorFlow for the same prediction task.
-
-Evaluation Metric:
- [https://www.kaggle.com/wiki/MeanFScore]
+Note that our work doesn't use GPU and the time estimations are based on CPU computation only.
 
 
-## Installation:
+### Installing
 
-'conda install keras'
+Exctract the zip file, you should have the file "run.py" and the folders named "road" and "saved_model". 
 
-'pip install tensorflow'
+We provide an already trained model inside the "saved_model" if you don't want to to recrate a model from scratch.
+
+You should have also the 2 zip files from kaggle.com containing the training and the test set.
+Extract them into the same folder; the directory contains now 4 folders named "road", "saved_model", "training" and "test_set_images".
+
+You are ready!
+
+
+## Getting Started
+
+To get the prediction file; in shell, go to project directory and then run
+
+```
+python run.py
+```
+
+It will load the precomputed model and use it to create the images prediction in the folder "test_set_result_model_final".
+Then it will create the prediction file from this set of image and save it under "model_final.csv"
+
+Creating the prediction will take between 5 and 10 minutes.
+
+## Create the model from scratch
+
+Instead of loading the model from "saved_model", we can create a new one from the training picture set.
+In this case open run.py and change the value of load_model to False.
+You can also choose if you want data augmentation and post processing by setting the boolean parameter.
+
+Creating the model from scrath took us around +-20h, with data augmentation.
